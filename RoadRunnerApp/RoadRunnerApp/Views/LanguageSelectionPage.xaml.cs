@@ -10,7 +10,6 @@ namespace RoadRunnerApp.Views
         public LanguageSelectionPage()
         {
             InitializeComponent();
-            Color periwinkleColor = (Color)App.Current.Resources["Periwinkle"];
         }
 
         private void OnClickableAreaNL(object sender, EventArgs e)
