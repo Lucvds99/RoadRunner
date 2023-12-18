@@ -8,10 +8,10 @@ namespace RoadRunnerApp.AppRoutes
 {
     public class Location
     {
-        public double latitude { get; }
-        public double longitude { get; }
+        public float latitude { get; }
+        public float longitude { get; }
 
-        public Location(double longitude, double latitude)
+        public Location(float longitude, float latitude)
         {
             this.longitude = longitude;
             this.latitude = latitude;

@@ -76,14 +76,11 @@ public partial class MapPage : ContentPage
         
             List<Landmark> landmarks = new List<Landmark>();
 
-            landmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.Location(51.58775, 4.782)));
-            landmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.Location(51.5941117, 4.7794167)));
-            landmarks.Add(new Landmark(1, "pauper", "oulleh", "eets", new AppRoutes.Location(35.8948, 46.9200)));
+            landmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.Location(51.58775f, 4.782f)));
+            landmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.Location(51.5941117f, 4.7794167f)));
+            landmarks.Add(new Landmark(1, "pauper", "oulleh", "eets", new AppRoutes.Location(35.8948f, 46.9200f)));
 
             return landmarks;
-
-
-        
     }
 
       
