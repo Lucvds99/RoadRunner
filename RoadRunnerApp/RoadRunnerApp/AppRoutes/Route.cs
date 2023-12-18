@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace RoadRunnerApp.AppRoutes
 {
-    internal class Route
+    public class Route
     {
+        private List<Landmark> landmarks;
+        private List<Location> path;
+        private Statistic statistic;
+        public Route()
+        {
+
+        }
+
+
     }
 }

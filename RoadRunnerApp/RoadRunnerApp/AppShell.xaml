@@ -5,11 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RoadRunnerApp"
     Shell.FlyoutBehavior="Disabled"
+    xmlns:views="clr-namespace:RoadRunnerApp"
     Title="RoadRunnerApp">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate views:MapPage}"
+        Route="MapPage" />
 
 </Shell>

@@ -8,8 +8,8 @@ namespace RoadRunnerApp.AppRoutes
 {
     internal class Location
     {
-        privatetitude double latitude;        
+        private double latitude;
         private double longitude;
-        private double longitude
+
     }
 }
