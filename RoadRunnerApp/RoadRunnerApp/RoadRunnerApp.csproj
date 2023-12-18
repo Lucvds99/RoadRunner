@@ -67,8 +67,13 @@
 	  <Folder Include="AppRoutes\" />
 	  <Folder Include="APIadapter\" />
 	  <Folder Include="NotificationControllers\" />
-	  <Folder Include="Views\" />
 	  <Folder Include="UIControllers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\LanguageSelectionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
