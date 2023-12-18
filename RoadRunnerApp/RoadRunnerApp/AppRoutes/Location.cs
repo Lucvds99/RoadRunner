@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace RoadRunnerApp.AppRoutes
 {
-    internal class Location
+    public class Location
     {
-        private double latitude;
-        private double longitude;
+        public double latitude { get; }
+        public double longitude { get; }
+
+        public Location(double longitude, double latitude)
+        {
+            this.longitude = longitude;
+            this.latitude = latitude;
+        }
 
     }
 }

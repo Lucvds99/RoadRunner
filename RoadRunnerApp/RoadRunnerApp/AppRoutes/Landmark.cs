@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace RoadRunnerApp.AppRoutes
 {
-    internal class Landmark
+    public class Landmark
     {
         public int id { get; }
-        private string name { get; }
-        private string description { get; }
-        private string theme { get; }
-        private Location location { get; }
+        public string name { get; }
+        public string description { get; }
+        public string theme { get; }
+        public Location location { get; }
 
         // Constructor Ouleh
         public Landmark(int id, string name, string description, string theme, Location location)
