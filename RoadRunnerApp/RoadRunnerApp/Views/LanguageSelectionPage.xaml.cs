@@ -10,43 +10,38 @@ namespace RoadRunnerApp.Views
         public LanguageSelectionPage()
         {
             InitializeComponent();
+            Color periwinkleColor = (Color)App.Current.Resources["Periwinkle"];
         }
 
-        private void OnSelectButtonClicked(object sender, EventArgs e)
+        private void OnClickableAreaNL(object sender, EventArgs e)
         {
-            Button clickedButton = sender as Button;
-
-            // Set button states based on the clicked button
-            switch (clickedButton.Text)
-            {
-                case "NL":
-                    isButtonSelectedNL = true;
-                    isButtonSelectedENG = false;
-                    break;
-
-                case "ENG":
-                    isButtonSelectedNL = false;
-                    isButtonSelectedENG = true;
-                    break;
-            }
-
-            // Update button states
-            UpdateButtonState(SelectButtonNL, isButtonSelectedNL);
-            UpdateButtonState(SelectButtonENG, isButtonSelectedENG);
+            Frame clickedFrame = sender as Frame;
+            var label = clickedFrame.FindByName<Label>("language");
+            isButtonSelectedENG = false;
+            isButtonSelectedNL = true;
+            updateFrames();
         }
 
-        private void UpdateButtonState(Button button, bool isButtonSelected)
+
+        private void OnClickableArea(object sender, EventArgs e)
         {
-            // Set button background and text color based on the state
-            if (isButtonSelected)
+            Frame clickedFrame = sender as Frame;
+            var label = clickedFrame.FindByName<Label>("language");
+            isButtonSelectedENG = true;
+            isButtonSelectedNL = false;
+            updateFrames();
+        }
+        private void updateFrames()
+        {
+            if (isButtonSelectedENG)
             {
-                button.BackgroundColor = Colors.Green; // Set the highlighted color
-                button.TextColor = Colors.White; // Set the text color when selected
+                ClickableAreaENG.Background = (Color)App.Current.Resources["Periwinkle"];
+                ClickableAreaNL.Background = (Color)App.Current.Resources["Mauve"];
             }
-            else
+            else 
             {
-                button.BackgroundColor = Colors.Gray; // Set the default color
-                button.TextColor = Colors.Black; // Set the text color when not selected
+                ClickableAreaNL.Background = (Color)App.Current.Resources["Periwinkle"];
+                ClickableAreaENG.Background = (Color)App.Current.Resources["Mauve"];
             }
         }
     }

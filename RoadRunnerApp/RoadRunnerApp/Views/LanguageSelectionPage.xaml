@@ -7,25 +7,37 @@
         <Label Text="Please select a language"
                HorizontalOptions="Center" />
         <!-- Use FillAndExpand for the HorizontalStackLayout -->
-        <HorizontalStackLayout HorizontalOptions="Center" Margin="5">
-            <Button x:Name="SelectButtonNL"
-                    Text="NL"
-                    Clicked="OnSelectButtonClicked"
-                    BackgroundColor="{Binding ButtonBackgroundColor}"
-                    TextColor="{Binding ButtonTextColor}"
-                    CornerRadius="10"
-                    Padding="10"
-                    Margin="20"
-                    HorizontalOptions="FillAndExpand" />
-            <Button x:Name="SelectButtonENG"
-                    Text="ENG"
-                    Clicked="OnSelectButtonClicked"
-                    BackgroundColor="{Binding ButtonBackgroundColor}"
-                    TextColor="{Binding ButtonTextColor}"
-                    Padding="10"                    
-                    Margin="20"
-                    CornerRadius="10"
-                    HorizontalOptions="FillAndExpand" />
-        </HorizontalStackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- First Horizontal Clickable Area -->
+            <Frame x:Name="ClickableAreaNL" Grid.Row="0" Grid.Column="0" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnClickableAreaNL" />
+                </Frame.GestureRecognizers>
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="5">
+                    <Image Source="gbr.svg" HeightRequest="100" WidthRequest="100" />
+                    <Label Text="ENG" TextColor="{DynamicResource ClickableAreaTextColor}" />
+                </StackLayout>
+            </Frame>
+
+            <!-- Second Horizontal Clickable Area -->
+            <Frame x:Name="ClickableAreaENG" Grid.Row="0" Grid.Column="1" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnClickableAreaNL" />
+                </Frame.GestureRecognizers>
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="5">
+                    <Image Source="nld.svg" HeightRequest="100" WidthRequest="100" />
+                    <Label Text="NL" TextColor="{DynamicResource ClickableAreaTextColor}" />
+                </StackLayout>
+            </Frame>
+        </Grid>
     </StackLayout>
 </ContentPage>
