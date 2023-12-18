@@ -62,4 +62,13 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="DatabaseControllers\" />
+	  <Folder Include="AppRoutes\" />
+	  <Folder Include="APIadapter\" />
+	  <Folder Include="NotificationControllers\" />
+	  <Folder Include="Views\" />
+	  <Folder Include="UIControllers\" />
+	</ItemGroup>
+
 </Project>
