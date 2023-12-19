@@ -6,6 +6,8 @@
     <StackLayout Margin="20">
         <Label Text="Please select a language"
                HorizontalOptions="Center" />
+        <Label Text="Selecteer een taal Aub. "
+               HorizontalOptions="Center" />
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -25,7 +27,7 @@
                 </Frame.GestureRecognizers>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="5">
                     <Image Source="gbr.svg" HeightRequest="100" WidthRequest="100" />
-                    <Label Text="ENG" 
+                    <Label Text="ENG"
                            HorizontalOptions="Center"
                            TextColor="{DynamicResource ClickableAreaTextColor}" />
                 </StackLayout>

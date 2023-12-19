@@ -13,6 +13,7 @@ namespace RoadRunnerApp.Views
             ClickableAreaENG.Background = Color.FromHex("B8B8F3");
             ClickableAreaNL.Background = Color.FromHex("B8B8F3");
         }
+        
 
         private void OnClickableAreaNL(object sender, EventArgs e)
         {

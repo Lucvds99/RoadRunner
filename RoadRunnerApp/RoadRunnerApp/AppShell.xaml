@@ -9,7 +9,7 @@
     Title="RoadRunnerApp">
 
     <ShellContent
-        Title="LanguageSelectionPage"
-        ContentTemplate="{DataTemplate views:LanguageSelectionPage}"
-        Route="LanguageSelectionPage"/>
+        Title="TutorialPage"
+        ContentTemplate="{DataTemplate views:TutorialPage}"
+        Route="TutorialPage"/>
 </Shell>
