@@ -74,13 +74,17 @@ public partial class MapPage : ContentPage
     public List<Landmark> getLandmarkList()
     {
         
-            List<Landmark> landmarks = new List<Landmark>();
+        List<Landmark> landmarks = new List<Landmark>();
 
-            landmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.Location(51.58775f, 4.782f)));
-            landmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.Location(51.5941117f, 4.7794167f)));
-            landmarks.Add(new Landmark(1, "pauper", "oulleh", "eets", new AppRoutes.Location(35.8948f, 46.9200f)));
+        landmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.Location(51.58775f, 4.782f)));
+        landmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.Location(51.5941117f, 4.7794167f)));
+        landmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.Location(51.5925f, 4.779695f)));
+        landmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.Location(51.5906117f, 4.7761667f)));
+        landmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.Location(51.5888333f, 4.775278f)));
+        landmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.Location(51.5880283f, 4.7763333f)));
+        landmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.Location(51.58875f, 4.7761111f)));
 
-            return landmarks;
+        return landmarks;
     }
 
       
