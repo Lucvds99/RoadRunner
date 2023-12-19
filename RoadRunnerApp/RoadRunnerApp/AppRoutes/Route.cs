@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Maui.Devices.Sensors;
-using MLocation = Microsoft.Maui.Devices.Sensors.Location;
+
 
 namespace RoadRunnerApp.AppRoutes
 {
     public class Route
     {
         private List<Landmark> landmarks;
-        private List<Location> path;
+        private List<CustomLocation> path;
         private Statistic statistic;
        
-        public Route(List<Landmark> landmarks, List<Location> path)
+        public Route(List<Landmark> landmarks, List<CustomLocation> path)
         {
             this.landmarks = landmarks;
             this.path = path;
