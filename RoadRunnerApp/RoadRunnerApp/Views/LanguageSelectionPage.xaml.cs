@@ -10,6 +10,8 @@ namespace RoadRunnerApp.Views
         public LanguageSelectionPage()
         {
             InitializeComponent();
+            ClickableAreaENG.Background = Color.FromHex("B8B8F3");
+            ClickableAreaNL.Background = Color.FromHex("B8B8F3");
         }
 
         private void OnClickableAreaNL(object sender, EventArgs e)
@@ -22,7 +24,7 @@ namespace RoadRunnerApp.Views
         }
 
 
-        private void OnClickableArea(object sender, EventArgs e)
+        private void OnClickableAreaENG(object sender, EventArgs e)
         {
             Frame clickedFrame = sender as Frame;
             var label = clickedFrame.FindByName<Label>("language");
@@ -30,17 +32,23 @@ namespace RoadRunnerApp.Views
             isButtonSelectedNL = false;
             updateFrames();
         }
+
+        private void OnClickedEnterButton(object sender, EventArgs e)
+        {
+            //Go to the next page. give along wich button selected eng.  
+        }
+
         private void updateFrames()
         {
             if (isButtonSelectedENG)
             {
-                ClickableAreaENG.Background = (Color)App.Current.Resources["Periwinkle"];
-                ClickableAreaNL.Background = (Color)App.Current.Resources["Mauve"];
+                ClickableAreaENG.Background = Color.FromHex("D7B8F3");//Color = Mauve
+                ClickableAreaNL.Background = Color.FromHex("B8B8F3");//Color = Periwinkle
             }
             else 
             {
-                ClickableAreaNL.Background = (Color)App.Current.Resources["Periwinkle"];
-                ClickableAreaENG.Background = (Color)App.Current.Resources["Mauve"];
+                ClickableAreaNL.Background = Color.FromHex("D7B8F3");//Color = Mauve
+                ClickableAreaENG.Background = Color.FromHex("B8B8F3");//Color = Periwinkle
             }
         }
     }

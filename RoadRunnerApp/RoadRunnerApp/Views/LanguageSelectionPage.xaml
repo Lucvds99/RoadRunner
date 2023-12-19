@@ -2,14 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RoadRunnerApp.Views.LanguageSelectionPage"
-             Title="LanguageSelectionPage">
+             Title="">
     <StackLayout Margin="20">
         <Label Text="Please select a language"
                HorizontalOptions="Center" />
-        <!-- Use FillAndExpand for the HorizontalStackLayout -->
-        <Grid>
+        <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
+                <!-- Add another row definition for the button -->
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -18,26 +19,37 @@
             </Grid.ColumnDefinitions>
 
             <!-- First Horizontal Clickable Area -->
-            <Frame x:Name="ClickableAreaNL" Grid.Row="0" Grid.Column="0" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10">
+            <Frame x:Name="ClickableAreaNL" Grid.Row="0" Grid.Column="0" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10" Margin="10">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnClickableAreaNL" />
                 </Frame.GestureRecognizers>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="5">
                     <Image Source="gbr.svg" HeightRequest="100" WidthRequest="100" />
-                    <Label Text="ENG" TextColor="{DynamicResource ClickableAreaTextColor}" />
+                    <Label Text="ENG" 
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource ClickableAreaTextColor}" />
                 </StackLayout>
             </Frame>
 
             <!-- Second Horizontal Clickable Area -->
-            <Frame x:Name="ClickableAreaENG" Grid.Row="0" Grid.Column="1" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10">
+            <Frame x:Name="ClickableAreaENG" Grid.Row="0" Grid.Column="1" BackgroundColor="{DynamicResource ClickableAreaColor}" CornerRadius="10" Padding="10" Margin="10">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnClickableAreaNL" />
+                    <TapGestureRecognizer Tapped="OnClickableAreaENG" />
                 </Frame.GestureRecognizers>
                 <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Spacing="5">
                     <Image Source="nld.svg" HeightRequest="100" WidthRequest="100" />
-                    <Label Text="NL" TextColor="{DynamicResource ClickableAreaTextColor}" />
+                    <Label Text="NL" 
+                           HorizontalTextAlignment="Center"
+                           TextColor="{DynamicResource ClickableAreaTextColor}" />
                 </StackLayout>
             </Frame>
+
+            <!-- Button in its own row and spanning both columns -->
+            <Button
+                Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="10"
+                Text="enter"
+                Clicked="OnClickedEnterButton"
+            />
         </Grid>
     </StackLayout>
 </ContentPage>
