@@ -15,7 +15,7 @@ public partial class TutorialPage : ContentPage
         {
             new CarouselItem {Title = "page 1", Description = lorem, Image = "testpicture.png", hasButton=false},
             new CarouselItem {Title = "page 2", Description = lorem, Image = "testpicture.png", hasButton=false},
-            new CarouselItem {Title = "page 3", Description = lorem, Image = "testpicture.png", hasButton=false},
+            new CarouselItem {Title = "page 3", Description = lorem, Image = "", hasButton=false},
             new CarouselItem {Title = "page 4", Description = lorem, Image = "testpicture.png", Button = "continue", hasButton=true}
         };
         carouselView.ItemsSource = items;
