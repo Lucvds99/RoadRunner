@@ -40,10 +40,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appicontest.png" Color="#B8B8F3" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\AppIcon\appicontest.png" Color="#B8B8F3" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -68,6 +68,10 @@
 	  <Folder Include="APIadapter\" />
 	  <Folder Include="NotificationControllers\" />
 	  <Folder Include="UIControllers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\AppIcon\appicontest.png" />
 	</ItemGroup>
 
 	<ItemGroup>

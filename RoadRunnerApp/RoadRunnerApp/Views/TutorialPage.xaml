@@ -21,17 +21,16 @@
                         <Label HorizontalTextAlignment="Center" Text="{Binding Title}"/>
                         <Image Source="{Binding Image}"/>
                         <Label Text="{Binding Description}" Margin="0,0,0,10"/>
+                        <!-- Button only visible and active on last page -->
                         <Button Text="{Binding Button}" Clicked="onButtonClick" IsVisible="{Binding hasButton}" IsEnabled="{Binding hasButton}"/>
                     </VerticalStackLayout>
                 </DataTemplate>
             </CarouselView.ItemTemplate>
         </CarouselView>
-
-        <!-- Button to Skip Tutorial -->
-        <Button Margin="10" Clicked="onButtonClickSkip" Text="Skip Tutorial" Grid.Row="2"/>
-
         <!-- IndicatorView -->
-        <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" VerticalOptions="End" Grid.Row="3"/>
+        <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" VerticalOptions="End" Grid.Row="2"/>
+        <!-- Button to Skip Tutorial -->
+        <Button Margin="10" Clicked="onButtonClickSkip" Text="Skip Tutorial" Grid.Row="3"/>
     </Grid>
 
 </ContentPage>
