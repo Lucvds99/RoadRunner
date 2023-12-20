@@ -57,15 +57,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+	  <Compile Remove="AppRoutes\Statistics.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="DatabaseControllers\" />
-	  <Folder Include="AppRoutes\" />
+		<PackageReference Include="Google.Maps.Routing.V2" Version="1.0.0-beta10" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Maui.Maps" Version="8.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="PolylineEncoder.Net" Version="1.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Folder Include="APIadapter\" />
+	  <Folder Include="DatabaseControllers\" />
 	  <Folder Include="NotificationControllers\" />
 	</ItemGroup>
 
@@ -84,5 +92,13 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\MapPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionRoadRunnerAppHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
