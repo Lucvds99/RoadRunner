@@ -17,7 +17,7 @@
             <CollectionView x:Name="collectionView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="5">
                             <Image Source="{Binding ImageSource}"
                                    WidthRequest="50"
                                    HeightRequest="50"/>
