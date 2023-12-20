@@ -22,6 +22,8 @@ namespace RoadRunnerApp.AppRoutes
 {
     public class RouteManager
     {
+        public List<Mlocation> decodedPolyline = new List<Mlocation>();
+
         public RouteManager()
         {
 
@@ -84,7 +86,7 @@ namespace RoadRunnerApp.AppRoutes
 
             string requestResult = response.Content.ReadAsStringAsync().Result;
 
-            List<Mlocation> decodedMeuk = GetDecodedLocations(GetEncodedPolylines(requestResult));
+            decodedPolyline = GetDecodedLocations(GetEncodedPolylines(requestResult));
 
         }
 

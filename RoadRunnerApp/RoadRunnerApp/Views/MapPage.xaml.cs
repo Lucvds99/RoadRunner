@@ -81,7 +81,7 @@ public partial class MapPage : ContentPage
 
 
         // Add the Polyline to the map's MapElements collection
-        //MainMap.MapElements.Add(Polyline)
+        
 
         MainMap.MapElements.Add(circle);
 
@@ -89,6 +89,7 @@ public partial class MapPage : ContentPage
         map.MapElements.Add(circle);
 
         drawpins(getLandmarkList());
+        drawpolyline(jekkrmoeder.decodedPolyline);
 
 
  
@@ -127,7 +128,30 @@ public partial class MapPage : ContentPage
         return landmarks;
     }
 
-      
+    public void drawpolyline(List<Mlocation> locations)
+    {
+        Polyline polyline = new Polyline
+        {
+            StrokeColor = Colors.Blue,
+            StrokeWidth = 12,
+            Geopath =
+            {
+                
+            }
+
+
+        };
+
+        foreach (Mlocation location in locations)
+        {
+            polyline.Geopath.Add(location);
+        }
+        MainMap.MapElements.Add(polyline);
+
+
+    }
+
+
 
 
     //private CancellationTokenSource _cancelTokenSource;
