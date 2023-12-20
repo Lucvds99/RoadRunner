@@ -29,7 +29,9 @@ public partial class MapPage : ContentPage
         _routeService.GetLandmarks();
         _routeService.GetRouteCoordinates(_landMarksToDraw);
 
-        MainMap.IsScrollEnabled = false;
+        MainMap.IsShowingUser = true;
+
+        MainMap.IsVisible = true;
         // To do:
 
         // Get/update user's realtime location on map
@@ -56,11 +58,22 @@ public partial class MapPage : ContentPage
 
         while (true)
         {
+
+
             Mlocation location =  await GetUserLocation();
 
             MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
 
-            MainMap.MoveToRegion(mapSpan);
+
+            Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
+
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                MainMap.MoveToRegion(mapSpan);
+            });
+            
+            await Task.Delay(500);
 
         }
 
