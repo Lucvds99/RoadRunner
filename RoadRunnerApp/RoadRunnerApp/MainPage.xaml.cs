@@ -7,6 +7,12 @@
         public MainPage()
         {
             InitializeComponent();
+            var database = new DatabaseManager();
+
+            foreach (var sight in database.GetAllSights())
+            {
+                Console.WriteLine(sight.Name);
+            }
         }
 
         private void OnCounterClicked(object sender, EventArgs e)
