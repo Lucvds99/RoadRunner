@@ -1,6 +1,6 @@
 using SQLite;
 
-namespace AppDatabase;
+namespace RoadRunnerApp.AppDatabase;
 
 public class Sight
 {

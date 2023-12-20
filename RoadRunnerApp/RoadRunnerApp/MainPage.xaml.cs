@@ -1,4 +1,6 @@
-﻿namespace RoadRunnerApp
+﻿using RoadRunnerApp.AppDatabase;
+
+namespace RoadRunnerApp
 {
     public partial class MainPage : ContentPage
     {
