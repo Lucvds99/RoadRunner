@@ -1,4 +1,6 @@
-﻿namespace RoadRunnerApp
+﻿using RoadRunnerApp.Views;
+
+namespace RoadRunnerApp
 {
     public partial class AppShell : Shell
     {

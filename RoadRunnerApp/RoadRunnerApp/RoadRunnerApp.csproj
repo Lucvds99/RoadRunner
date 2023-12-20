@@ -67,7 +67,6 @@
 	  <Folder Include="AppRoutes\" />
 	  <Folder Include="APIadapter\" />
 	  <Folder Include="NotificationControllers\" />
-	  <Folder Include="UIControllers\" />
 	</ItemGroup>
 
 	<ItemGroup>
