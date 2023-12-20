@@ -57,13 +57,11 @@ public partial class MapPage : ContentPage
         Thread updateMapThread = new Thread(UpdateMap);
         updateMapThread.Start();
 
-       
-
     }
 
-    public async Task<List<double>> GetLandmarkDistance(Mlocation mlocation)
+    public async Task<List<Tuple<Landmark, double>>> GetLandmarkDistance(Mlocation mlocation)
     {
-        List<double> distances = new List<double> { };
+        List<Tuple<Landmark, double>> distances = new List<Tuple<Landmark, double>>();
 
         Mlocation user;
         Mlocation poi = new Mlocation();
@@ -76,11 +74,36 @@ public partial class MapPage : ContentPage
 
             // British word for "meter", some weird people spell it like this, but we accept them anyways
             double metres = Mlocation.CalculateDistance(user, poi, DistanceUnits.Kilometers) * 1000;
-            distances.Add(metres);
+            var currentDistance = new Tuple<Landmark, double> (landmark, metres);
+            distances.Add(currentDistance);
         }
 
         return distances;
     }
+
+ 
+    public async Task<Landmark> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
+    {
+        Landmark closestLandmark = landmarksWithDistance[0].Item1;
+        double closestDistance = landmarksWithDistance[0].Item2;
+
+
+        foreach (var tuple in landmarksWithDistance)
+        {
+            
+            double currentDistance = tuple.Item2;
+
+            if (currentDistance < closestDistance)
+            {
+                closestLandmark = tuple.Item1;
+                closestDistance = currentDistance;
+            }
+            
+
+        }
+        return closestLandmark;
+    }
+
 
 
     public async void UpdateMap()
@@ -99,10 +122,13 @@ public partial class MapPage : ContentPage
             });
 
 
-            List<double> distances = await GetLandmarkDistance(location);
-            foreach (double distance in distances)
+            List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
+            Landmark closestLandmark = await GetClosestLandmark(distances);
+
+
+            foreach (Tuple<Landmark, double> distance in distances)
             {
-                Trace.WriteLine(distance);
+                Trace.WriteLine(closestLandmark);
             }
 
             await Task.Delay(2000);
