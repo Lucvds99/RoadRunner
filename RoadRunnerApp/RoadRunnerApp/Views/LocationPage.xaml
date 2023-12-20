@@ -4,13 +4,12 @@
              x:Class="RoadRunnerApp.Views.LocationPage"
              Title="Locations">
     <StackLayout>
-        <!-- Row 0: Label -->
         <Label Text="TestLabel To see if it works" />
 
-        <!-- Row 1: Map (take as much space as possible) -->
-
-
-        <!-- Row 2: Label (positioned at the bottom right) -->
+        <ScrollView>
+            
+        </ScrollView>
+        
         <HorizontalStackLayout Padding="10" HorizontalOptions="CenterAndExpand">
             <Grid>
                 <Grid.ColumnDefinitions>

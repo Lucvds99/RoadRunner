@@ -5,7 +5,6 @@
              Shell.NavBarIsVisible="False"
              Title="Direction description">
     <StackLayout>
-        <!-- Row 0: Label -->
         <VerticalStackLayout>
             <Label Text="{Binding HeadingTo}" />
             <HorizontalStackLayout>
@@ -14,10 +13,8 @@
             </HorizontalStackLayout>
         </VerticalStackLayout>
         
-        <!-- Row 1: Map (take as much space as possible) -->
         <maps:Map x:Name="MainMap" MapType="Street"/>
 
-        <!-- Row 2: Label (positioned at the bottom right) -->
         <HorizontalStackLayout Padding="10" HorizontalOptions="CenterAndExpand">
             <Grid>
                 <Grid.ColumnDefinitions>
