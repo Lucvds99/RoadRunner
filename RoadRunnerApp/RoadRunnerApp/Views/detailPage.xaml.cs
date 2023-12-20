@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+using NavigationPage = Microsoft.Maui.Controls.NavigationPage;
 
 namespace RoadRunnerApp.Views;
 
@@ -8,7 +9,9 @@ public partial class detailPage : ContentPage
 	{
 		// needs to remember where user came from. idk how lol
 		InitializeComponent();
-	}
+        NavigationPage.SetHasBackButton(this, false);
+        NavigationPage.SetBackButtonTitle(this, "");
+    }
 
 	//TODO: multiple constructors. one For route and one for location. 
 	//		Both use the same detail page but diffrent init of the 

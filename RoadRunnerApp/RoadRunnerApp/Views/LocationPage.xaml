@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoadRunnerApp.Views.LocationPage"
+             Title="Locations">
+    <StackLayout>
+        <!-- Row 0: Label -->
+        <Label Text="TestLabel To see if it works" />
+
+        <!-- Row 1: Map (take as much space as possible) -->
+
+
+        <!-- Row 2: Label (positioned at the bottom right) -->
+        <HorizontalStackLayout Padding="10" HorizontalOptions="CenterAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <ImageButton  Source="museum.png"
+                     Grid.Column="0"
+                     WidthRequest="50"
+                     HeightRequest="50"
+                     Margin="0,0,40,0"
+                     HorizontalOptions="Center"
+                     Clicked="LocationsButton"/>
+                <ImageButton Source="compass.png"
+                     Grid.Column="1"
+                     WidthRequest="50"
+                     HeightRequest="50"
+                     HorizontalOptions="Center"
+                     Clicked="MapButton"/>
+                <ImageButton Source="distance.png"
+                     Grid.Column="2"
+                     WidthRequest="50"
+                     HeightRequest="50"
+                     HorizontalOptions="Center"
+                     Margin="40,0,0,0"
+                     Clicked="RoutesButton"/>
+            </Grid>
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentPage>

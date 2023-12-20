@@ -14,7 +14,6 @@ public partial class TutorialPage : ContentPage
         InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
 
-
         //Items for in the Carousel in Tutorial page
         var items = new List<CarouselItem>
         {
@@ -28,12 +27,12 @@ public partial class TutorialPage : ContentPage
     public void onButtonClick(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        //Navigation.PushAsync(Map page including User);
+        Navigation.PushAsync(new MapPage());
     }
 
     public void onButtonClickSkip(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        //Navigation.PushAsync(Map page including User);
+        Navigation.PushAsync(new MapPage());
     }
 }

@@ -5,13 +5,13 @@ using RoadRunnerApp.AppRoutes;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+using NavigationPage = Microsoft.Maui.Controls.NavigationPage;
 
 
 namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
-
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
 
@@ -19,7 +19,16 @@ public partial class MapPage : ContentPage
 	public MapPage()
 	{
 		InitializeComponent();
+        NavigationPage.SetHasBackButton(this, false);
+        NavigationPage.SetBackButtonTitle(this, "");
 
+
+        /////////////////hard coded embeding xaml 
+        
+        
+
+        ////////////////
+ 
         _routeService = new RouteManager();
         _landMarksToDraw = new List<Landmark>();
 
@@ -148,7 +157,18 @@ public partial class MapPage : ContentPage
     }
 
 
+    private void LocationsButton(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new LocationPage());
+    }
 
+    private void MapButton(object sender, EventArgs e)
+    {
+        
+    }
 
-
+    private void RoutesButton(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new RoutesPage());
+    }
 }
