@@ -3,6 +3,8 @@ using Microsoft.Maui.Maps;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 using RoadRunnerApp.AppRoutes;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
+using System.Diagnostics;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 
 
 namespace RoadRunnerApp.Views;
@@ -13,12 +15,21 @@ public partial class MapPage : ContentPage
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
 
+
 	public MapPage()
 	{
 		InitializeComponent();
+
+        _routeService = new RouteManager();
         _landMarksToDraw = new List<Landmark>();
 
+        _routeService.LandmarksRecieved += OnLandmarksReceived;
+        _routeService.CoordinatesReceived += OnCoordinatesReceived;
 
+        _routeService.GetLandmarks();
+        _routeService.GetRouteCoordinates(_landMarksToDraw);
+
+        MainMap.IsScrollEnabled = false;
         // To do:
 
         // Get/update user's realtime location on map
@@ -35,66 +46,41 @@ public partial class MapPage : ContentPage
 
         // Dummy 'DB' List for testing:
 
-        _routeService = new RouteManager();
+        Thread updateThread = new Thread(UpdateMap);
+        updateThread.Start();
 
-        _routeService.LandmarksRecieved += OnLandmarksReceived;
-        _routeService.GetLandmarks();
-        _routeService.CoordinatesReceived += OnCoordinatesReceived;
-        _routeService.GetRouteCoordinates(_landMarksToDraw);
+    }
 
-        Microsoft.Maui.Devices.Sensors.Location location = new Microsoft.Maui.Devices.Sensors.Location(51.659012926034684, 4.95121208613425, 17);
-      
-        
-       MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-        MainMap.MoveToRegion(mapSpan);
-        MainMap.IsShowingUser = true;
+    public async void UpdateMap()
+    {
 
-        Circle circle = new Circle()
+        while (true)
         {
-            Center = location,
-            Radius = Distance.FromMeters(50),
-            StrokeColor = Colors.Aqua,
-            StrokeWidth = 8,
-            FillColor = Color.FromRgba(255, 0, 0, 64)
-        };
+            Mlocation location =  await GetUserLocation();
 
-        //Polyline polyline = new Polyline
-        //{
-        //    StrokeColor = Colors.Blue,
-        //    StrokeWidth = 12,
-        //    Geopath =
-        //    {
-        //        new Mlocation(51.58775f, 4.782f),
-        //        new Mlocation(51.5941117f, 4.7794167f)
-        //    }
-        //};
+            MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
 
-        // Instantiate a polygon
-        Polygon polygon = new Polygon
+            MainMap.MoveToRegion(mapSpan);
+
+        }
+
+    }
+
+    public async Task<Mlocation> GetUserLocation()
+    {
+        try
         {
-            StrokeWidth = 8,
-            StrokeColor = Color.FromArgb("#1BA1E2"),
-            FillColor = Color.FromArgb("#881BA1E2"),
-            Geopath =
-            {
-                new Mlocation(51.58775f, 4.782f),
-                new Mlocation(51.5941117f, 4.7794167f),
-                new Mlocation(51.5925f, 4.7794167f),
-            }
-        };
+            Mlocation location = await Geolocation.Default.GetLastKnownLocationAsync();
 
-        // Add the polygon to the map's MapElements collection
-        //MainMap.MapElements.Add(polygon);
+            if (location != null)
+                return location;
+        }
+        catch (Exception ex)
+        {
+            Trace.WriteLine(ex.Message);
+        }
 
-
-        // Add the Polyline to the map's MapElements collection
-        
-
-        MainMap.MapElements.Add(circle);
-
-        Map map = new Map(mapSpan);
-        map.MapElements.Add(circle);
-
+        return null; // Johan might be dissapointed
     }
 
     public void Drawpins(List<Landmark> landmarks)  
@@ -151,41 +137,5 @@ public partial class MapPage : ContentPage
 
 
 
-    //private CancellationTokenSource _cancelTokenSource;
-    //private bool _isCheckingLocation;
 
-    //public async Task GetCurrentLocation()
-    //{
-    //    try
-    //    {
-    //        _isCheckingLocation = true;
-
-    //        GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-    //        _cancelTokenSource = new CancellationTokenSource();
-
-    //        Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-    //        if (location != null)
-    //            Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
-    //    }
-    //    // Catch one of the following exceptions:
-    //    //   FeatureNotSupportedException
-    //    //   FeatureNotEnabledException
-    //    //   PermissionException
-    //    catch (Exception ex)
-    //    {
-    //        // Unable to get location
-    //    }
-    //    finally
-    //    {
-    //        _isCheckingLocation = false;
-    //    }
-    //}
-
-    //public void CancelRequest()
-    //{
-    //    if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
-    //        _cancelTokenSource.Cancel();
-    //}
 }
