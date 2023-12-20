@@ -20,15 +20,18 @@ using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace RoadRunnerApp.AppRoutes
 {
-    public class RouteManager
+    public class RouteManager : IRouteService
     {
-        public List<Mlocation> decodedPolyline = new List<Mlocation>();
+
+        public event EventHandler<List<Mlocation>> CoordinatesReceived;
+
+        public List<Mlocation> decodedCoordinates { get; set; }
 
         public RouteManager()
         {
+            
 
-
-            HttpRequest();
+        
         }
         // To Do: Je moeder.
 
@@ -51,7 +54,7 @@ namespace RoadRunnerApp.AppRoutes
 
         //}
 
-        public async void HttpRequest()
+        public async Task<List<Mlocation>> HttpRequest()
         {
 
      
@@ -86,8 +89,8 @@ namespace RoadRunnerApp.AppRoutes
 
             string requestResult = response.Content.ReadAsStringAsync().Result;
 
-            decodedPolyline = GetDecodedLocations(GetEncodedPolylines(requestResult));
-
+            decodedCoordinates = GetDecodedLocations(GetEncodedPolylines(requestResult));
+            return decodedCoordinates;
         }
 
 
@@ -124,6 +127,15 @@ namespace RoadRunnerApp.AppRoutes
             return routeLocations;
         }
 
+        public async Task GetRouteCoordinates()
+        {
+    
+            List<Mlocation> decodedCoords = await HttpRequest();
+
+            // Coordinates are recieved, trigger event
+            CoordinatesReceived?.Invoke(this, decodedCoords);
+
+        }
     }
 
 }

@@ -9,9 +9,13 @@ namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
+
+    private readonly IRouteService _routeService;
+
 	public MapPage()
 	{
 		InitializeComponent();
+
 
 
         // To do:
@@ -30,8 +34,10 @@ public partial class MapPage : ContentPage
 
         // Dummy 'DB' List for testing:
 
+        _routeService = new RouteManager();
 
-
+        _routeService.CoordinatesReceived += OnCoordinatesReceived;
+        _routeService.GetRouteCoordinates();
 
         Microsoft.Maui.Devices.Sensors.Location location = new Microsoft.Maui.Devices.Sensors.Location(51.659012926034684, 4.95121208613425, 17);
       
@@ -74,8 +80,6 @@ public partial class MapPage : ContentPage
             }
         };
 
-        RouteManager jekkrmoeder = new RouteManager();
-
         // Add the polygon to the map's MapElements collection
         //MainMap.MapElements.Add(polygon);
 
@@ -89,7 +93,7 @@ public partial class MapPage : ContentPage
         map.MapElements.Add(circle);
 
         drawpins(getLandmarkList());
-        drawpolyline(jekkrmoeder.decodedPolyline);
+        
 
 
  
@@ -124,11 +128,18 @@ public partial class MapPage : ContentPage
         landmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333f, 4.775278f)));
         landmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283f, 4.7763333f)));
         landmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875f, 4.7761111f)));
-
         return landmarks;
     }
 
-    public void drawpolyline(List<Mlocation> locations)
+    private void OnCoordinatesReceived(object sender, List<Mlocation> coordinates)
+    {
+        // Handle received coordinates, e.g., draw polylines on the map
+        // Use the received coordinates to draw polylines on the frontend
+        DrawPolyline(coordinates);
+    }
+
+
+    public void DrawPolyline(List<Mlocation> locations)
     {
         Polyline polyline = new Polyline
         {
@@ -142,11 +153,14 @@ public partial class MapPage : ContentPage
 
         };
 
+
         foreach (Mlocation location in locations)
         {
             polyline.Geopath.Add(location);
         }
         MainMap.MapElements.Add(polyline);
+
+        
 
 
     }
