@@ -6,6 +6,7 @@ using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using System.ComponentModel;
+using Google.Protobuf.WellKnownTypes;
 
 
 namespace RoadRunnerApp.Views;
@@ -82,10 +83,11 @@ public partial class MapPage : ContentPage
     }
 
  
-    public async Task<Landmark> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
+    public async Task<Tuple<Landmark, double>> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
     {
         Landmark closestLandmark = landmarksWithDistance[0].Item1;
         double closestDistance = landmarksWithDistance[0].Item2;
+        Tuple<Landmark,double> closestTuple = landmarksWithDistance.First();
 
 
         foreach (var tuple in landmarksWithDistance)
@@ -95,13 +97,25 @@ public partial class MapPage : ContentPage
 
             if (currentDistance < closestDistance)
             {
-                closestLandmark = tuple.Item1;
-                closestDistance = currentDistance;
+
+                closestTuple = tuple;
+        
             }
             
 
         }
-        return closestLandmark;
+        return closestTuple;
+    }
+
+    public bool isInDistance(Tuple<Landmark, double> closestTuple)
+    {
+        if(closestTuple.Item2 <= 15)
+        {
+            return true;
+        }
+        return false;
+
+
     }
 
 
@@ -123,12 +137,18 @@ public partial class MapPage : ContentPage
 
 
             List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
-            Landmark closestLandmark = await GetClosestLandmark(distances);
+            Tuple<Landmark,double> closestTuple = await GetClosestLandmark(distances);
+
+            if (isInDistance(closestTuple))
+            {
+                Landmark closeLandmark = closestTuple.Item1;
+            }
+            
 
 
             foreach (Tuple<Landmark, double> distance in distances)
             {
-                Trace.WriteLine(closestLandmark);
+                Trace.WriteLine(closestTuple);
             }
 
             await Task.Delay(2000);
