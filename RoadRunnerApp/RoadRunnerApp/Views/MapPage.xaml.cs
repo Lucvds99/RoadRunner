@@ -38,9 +38,9 @@ public partial class MapPage : ContentPage
         _routeService = new RouteManager();
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
-        _routeService.CoordinatesReceived += OnCoordinatesReceived;
-        _routeService.GetRouteCoordinates();
         _routeService.GetLandmarks();
+        _routeService.CoordinatesReceived += OnCoordinatesReceived;
+        _routeService.GetRouteCoordinates(_landMarksToDraw);
 
         Microsoft.Maui.Devices.Sensors.Location location = new Microsoft.Maui.Devices.Sensors.Location(51.659012926034684, 4.95121208613425, 17);
       

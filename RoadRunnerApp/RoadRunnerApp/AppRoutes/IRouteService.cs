@@ -14,7 +14,7 @@ namespace RoadRunnerApp.AppRoutes
         event EventHandler<List<Mlocation>> CoordinatesReceived;
 
         void GetLandmarks();
-        Task GetRouteCoordinates();
+        Task GetRouteCoordinates(List<Landmark> landmarks);
 
 
     }

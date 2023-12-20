@@ -38,17 +38,17 @@ namespace RoadRunnerApp.AppRoutes
 
         private static string url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
-        public async Task<List<Mlocation>> HttpRequest()
+        public async Task<List<Mlocation>> HttpRequest(List<Landmark>landmarks)
         {
-
-
+            Landmark original = landmarks[0];
+            Landmark destination = landmarks.Last();
             //string jsonString = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
             Request routeRequest = new Request
             {
-                origin = new Waypoint(new Location(51.58775, 4.782), "Chassé Theater", "penisstraat 7"),
+               
+                origin = new Waypoint(new Location(original.location.latitude, original.location.longitude), "banaan", "banaan"),
                 intermediates = [new Waypoint(new Location(51.5906117, 4.7761667), "Kasteel nibba", "Katoenstraat 12")],
-                destination = new Waypoint(new Location(51.5925, 4.7794167), "Purple rain", "piemelstraat 9"),
-                travelMode = RouteTravelMode.WALK.ToString(),
+                destination = new Waypoint(new Location(destination.location.latitude, destination.location.longitude), "banaan", "banaan")
                 //intermediates = new Waypoint[] { new Waypoint(new Location(51.5941117, 4.7794167), "henk", "gayweg 7") }
             };
 
@@ -112,10 +112,10 @@ namespace RoadRunnerApp.AppRoutes
             return routeLocations;
         }
 
-        public async Task GetRouteCoordinates()
+        public async Task GetRouteCoordinates(List<Landmark> landmarks)
         {
     
-            List<Mlocation> decodedCoords = await HttpRequest();
+            List<Mlocation> decodedCoords = await HttpRequest(landmarks);
 
             // Coordinates are recieved, trigger event
             CoordinatesReceived?.Invoke(this, decodedCoords);
@@ -130,13 +130,13 @@ namespace RoadRunnerApp.AppRoutes
             
             // Test List
             List<Landmark> retrievedLandmarks = new List<Landmark>();
-            retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775f, 4.782f)));
-            retrievedLandmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117f, 4.7794167f)));
-            retrievedLandmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925f, 4.779695f)));
-            retrievedLandmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117f, 4.7761667f)));
-            retrievedLandmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333f, 4.775278f)));
-            retrievedLandmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283f, 4.7763333f)));
-            retrievedLandmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875f, 4.7761111f)));
+            retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775, 4.782)));
+            retrievedLandmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117, 4.7794167)));
+            retrievedLandmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925, 4.779695)));
+            retrievedLandmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117, 4.7761667)));
+            retrievedLandmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333, 4.775278)));
+            retrievedLandmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283, 4.7763333)));
+            retrievedLandmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875, 4.7761111)));
 
 
             LandmarksRecieved?.Invoke(this, retrievedLandmarks);
