@@ -42,12 +42,26 @@ namespace RoadRunnerApp.AppRoutes
         {
             Landmark original = landmarks[0];
             Landmark destination = landmarks.Last();
+
+            // Remove first and last landmarks so we can have all the intermediate landmarks
+            landmarks.Remove(landmarks.First<Landmark>());
+            landmarks.Remove(landmarks.Last<Landmark>());
+
+
+            Waypoint[] intermediatePoints = new Waypoint[landmarks.Count];
+
+            for (int i = 0; i < landmarks.Count; i++)
+            {         
+                Landmark currentLandmark = landmarks[i];
+                intermediatePoints[i] = new Waypoint(new Location(currentLandmark.location.latitude, currentLandmark.location.longitude), currentLandmark.name, "address");
+            }
+
             //string jsonString = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
             Request routeRequest = new Request
             {
                
                 origin = new Waypoint(new Location(original.location.latitude, original.location.longitude), "banaan", "banaan"),
-                intermediates = [new Waypoint(new Location(51.5906117, 4.7761667), "Kasteel nibba", "Katoenstraat 12")],
+                intermediates = intermediatePoints,
                 destination = new Waypoint(new Location(destination.location.latitude, destination.location.longitude), "banaan", "banaan"),
                 travelMode = "WALK"
                 //intermediates = new Waypoint[] { new Waypoint(new Location(51.5941117, 4.7794167), "henk", "gayweg 7") }
