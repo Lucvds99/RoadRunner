@@ -24,6 +24,7 @@ namespace RoadRunnerApp.AppRoutes
     {
 
         public event EventHandler<List<Mlocation>> CoordinatesReceived;
+        public event EventHandler<List<Landmark>> LandmarksRecieved;
 
         public List<Mlocation> decodedCoordinates { get; set; }
 
@@ -36,23 +37,6 @@ namespace RoadRunnerApp.AppRoutes
         // To Do: Je moeder.
 
         private static string url = "https://routes.googleapis.com/directions/v2:computeRoutes";
-
-
-        //public async void SendTest()
-        //{
-        //    //new Mlocation(51.58775f, 4.782f),
-        //    //new Mlocation(51.5941117f, 4.7794167f),
-        //    //new Mlocation(51.5925f, 4.7794167f),
-
-
-        //    Request routeRequest = new Request
-        //    {
-        //        origin = new Waypoint(new Location(51.58775, 4.782), "Chassé Theater", "penisstraat 7"),
-        //        destination = new Waypoint(new Location(51.5925, 4.7794167), "Purple rain", "piemelstraat 9"),
-        //        travelMode = RouteTravelMode.WALK
-        //    };
-
-        //}
 
         public async Task<List<Mlocation>> HttpRequest()
         {
@@ -136,6 +120,26 @@ namespace RoadRunnerApp.AppRoutes
             // Coordinates are recieved, trigger event
             CoordinatesReceived?.Invoke(this, decodedCoords);
 
+        }
+
+        // Retrieve landmarks from database
+        public void GetLandmarks() //Change to Task later
+        {
+            // To do: Link this method with database so we get actual landmarks from DB
+            
+            
+            // Test List
+            List<Landmark> retrievedLandmarks = new List<Landmark>();
+            retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775f, 4.782f)));
+            retrievedLandmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117f, 4.7794167f)));
+            retrievedLandmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925f, 4.779695f)));
+            retrievedLandmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117f, 4.7761667f)));
+            retrievedLandmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333f, 4.775278f)));
+            retrievedLandmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283f, 4.7763333f)));
+            retrievedLandmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875f, 4.7761111f)));
+
+
+            LandmarksRecieved?.Invoke(this, retrievedLandmarks);
         }
     }
 

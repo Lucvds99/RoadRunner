@@ -11,11 +11,12 @@ public partial class MapPage : ContentPage
 {
 
     private readonly IRouteService _routeService;
+    private List<Landmark> _landMarksToDraw;
 
 	public MapPage()
 	{
 		InitializeComponent();
-
+        _landMarksToDraw = new List<Landmark>();
 
 
         // To do:
@@ -36,8 +37,10 @@ public partial class MapPage : ContentPage
 
         _routeService = new RouteManager();
 
+        _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
         _routeService.GetRouteCoordinates();
+        _routeService.GetLandmarks();
 
         Microsoft.Maui.Devices.Sensors.Location location = new Microsoft.Maui.Devices.Sensors.Location(51.659012926034684, 4.95121208613425, 17);
       
@@ -92,17 +95,9 @@ public partial class MapPage : ContentPage
         Map map = new Map(mapSpan);
         map.MapElements.Add(circle);
 
-        drawpins(getLandmarkList());
-        
-
-
- 
-
-
-
     }
 
-    public void drawpins(List<Landmark> landmarks)  
+    public void Drawpins(List<Landmark> landmarks)  
     {
         foreach (Landmark landmark in landmarks)
         {
@@ -115,21 +110,12 @@ public partial class MapPage : ContentPage
         
     }
 
-
-    public List<Landmark> getLandmarkList()
+    private void OnLandmarksReceived(object sender, List<Landmark> landmarks)
     {
-        
-        List<Landmark> landmarks = new List<Landmark>();
-
-        landmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775f, 4.782f)));
-        landmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117f, 4.7794167f)));
-        landmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925f, 4.779695f)));
-        landmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117f, 4.7761667f)));
-        landmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333f, 4.775278f)));
-        landmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283f, 4.7763333f)));
-        landmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875f, 4.7761111f)));
-        return landmarks;
+        this._landMarksToDraw = landmarks;
+        Drawpins(_landMarksToDraw);
     }
+
 
     private void OnCoordinatesReceived(object sender, List<Mlocation> coordinates)
     {
@@ -150,7 +136,6 @@ public partial class MapPage : ContentPage
                 
             }
 
-
         };
 
 
@@ -159,8 +144,6 @@ public partial class MapPage : ContentPage
             polyline.Geopath.Add(location);
         }
         MainMap.MapElements.Add(polyline);
-
-        
 
 
     }
