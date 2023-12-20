@@ -141,7 +141,9 @@ public partial class MapPage : ContentPage
 
             if (isInDistance(closestTuple))
             {
-                Landmark closeLandmark = closestTuple.Item1;
+                Landmark closestLandmark = closestTuple.Item1;
+
+                //TODO Deze landmark gebruiken voor het aanroepen van de popup.
             }
             
 
