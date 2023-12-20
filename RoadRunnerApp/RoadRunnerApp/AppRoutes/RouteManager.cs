@@ -57,13 +57,14 @@ namespace RoadRunnerApp.AppRoutes
         public async Task<List<Mlocation>> HttpRequest()
         {
 
-     
+
             //string jsonString = JsonConvert.SerializeObject(jsonObject, Formatting.Indented);
             Request routeRequest = new Request
             {
-                origin = new Waypoint(new Location(51.5888333, 4.775278), "Chassé Theater", "penisstraat 7"),
+                origin = new Waypoint(new Location(51.58775, 4.782), "Chassé Theater", "penisstraat 7"),
+                intermediates = [new Waypoint(new Location(51.5906117, 4.7761667), "Kasteel nibba", "Katoenstraat 12")],
                 destination = new Waypoint(new Location(51.5925, 4.7794167), "Purple rain", "piemelstraat 9"),
-                //travelMode = RouteTravelMode.WALK.ToString(),
+                travelMode = RouteTravelMode.WALK.ToString(),
                 //intermediates = new Waypoint[] { new Waypoint(new Location(51.5941117, 4.7794167), "henk", "gayweg 7") }
             };
 

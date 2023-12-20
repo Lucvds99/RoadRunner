@@ -14,8 +14,8 @@ namespace RoadRunnerApp.AppRoutes
     {
         public Waypoint origin { get; set; }
         public Waypoint destination { get; set; }
-        //public Waypoint[] intermediates { get; set; } // Waypoints along the route, for either stopping/passing by. Up to 25 intermediate waypoints are supported.
-        //public string travelMode { get; set; } // Current application only uses WALK as travelmode
+        public Waypoint[] intermediates { get; set; } // Waypoints along the route, for either stopping/passing by. Up to 25 intermediate waypoints are supported.
+        public string travelMode { get; set; } // Current application only uses WALK as travelmode
     }
 
     public class Waypoint
