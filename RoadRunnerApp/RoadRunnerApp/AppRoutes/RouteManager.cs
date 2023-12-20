@@ -48,7 +48,8 @@ namespace RoadRunnerApp.AppRoutes
                
                 origin = new Waypoint(new Location(original.location.latitude, original.location.longitude), "banaan", "banaan"),
                 intermediates = [new Waypoint(new Location(51.5906117, 4.7761667), "Kasteel nibba", "Katoenstraat 12")],
-                destination = new Waypoint(new Location(destination.location.latitude, destination.location.longitude), "banaan", "banaan")
+                destination = new Waypoint(new Location(destination.location.latitude, destination.location.longitude), "banaan", "banaan"),
+                travelMode = "WALK"
                 //intermediates = new Waypoint[] { new Waypoint(new Location(51.5941117, 4.7794167), "henk", "gayweg 7") }
             };
 

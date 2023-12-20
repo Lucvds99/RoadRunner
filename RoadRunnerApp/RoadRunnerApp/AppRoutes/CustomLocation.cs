@@ -11,10 +11,10 @@ namespace RoadRunnerApp.AppRoutes
         public double latitude { get; }
         public double longitude { get; }
 
-        public CustomLocation(double longitude, double latitude)
+        public CustomLocation(double latitude, double longitude)
         {
-            this.longitude = longitude;
             this.latitude = latitude;
+            this.longitude = longitude;
         }
 
     }

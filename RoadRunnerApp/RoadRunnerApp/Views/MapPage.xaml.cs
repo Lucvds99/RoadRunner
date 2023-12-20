@@ -104,7 +104,7 @@ public partial class MapPage : ContentPage
             double longitude = landmark.location.longitude;
             double latitude = landmark.location.latitude;
 
-            Microsoft.Maui.Devices.Sensors.Location pinlocation = new Microsoft.Maui.Devices.Sensors.Location(longitude, latitude);
+            Microsoft.Maui.Devices.Sensors.Location pinlocation = new Microsoft.Maui.Devices.Sensors.Location(latitude, longitude);
             MainMap.Pins.Add(new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place });
         }
         
