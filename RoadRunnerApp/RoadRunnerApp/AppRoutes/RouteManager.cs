@@ -36,21 +36,26 @@ namespace RoadRunnerApp.AppRoutes
 
         private static string url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
-        public async Task<List<Mlocation>> HttpRequest(List<Landmark>landmarks)
+        public async Task<List<Mlocation>> HttpRequest(List<Landmark>landmarks, Mlocation userLocation)
         {
+            List<Landmark> copiedLandmarks = new List<Landmark>(landmarks);
+
+
             Landmark original = landmarks[0];
             Landmark destination = landmarks.Last();
 
             // Remove first and last landmarks so we can have all the intermediate landmarks
-            landmarks.Remove(landmarks.First<Landmark>());
-            landmarks.Remove(landmarks.Last<Landmark>());
+            copiedLandmarks.Remove(copiedLandmarks.First<Landmark>());
+            copiedLandmarks.Remove(copiedLandmarks.Last<Landmark>());
 
 
-            Waypoint[] intermediatePoints = new Waypoint[landmarks.Count];
 
-            for (int i = 0; i < landmarks.Count; i++)
+
+            Waypoint[] intermediatePoints = new Waypoint[copiedLandmarks.Count];
+
+            for (int i = 0; i < copiedLandmarks.Count; i++)
             {         
-                Landmark currentLandmark = landmarks[i];
+                Landmark currentLandmark = copiedLandmarks[i];
                 intermediatePoints[i] = new Waypoint(new Location(currentLandmark.location.latitude, currentLandmark.location.longitude), currentLandmark.name, "address");
             }
 
@@ -58,7 +63,7 @@ namespace RoadRunnerApp.AppRoutes
             Request routeRequest = new Request
             {
                
-                origin = new Waypoint(new Location(original.location.latitude, original.location.longitude), "banaan", "banaan"),
+                origin = new Waypoint(new Location(userLocation.Latitude, userLocation.Longitude), "user", "banaan"),
                 intermediates = intermediatePoints,
                 destination = new Waypoint(new Location(destination.location.latitude, destination.location.longitude), "banaan", "banaan"),
                 travelMode = "WALK"
@@ -125,10 +130,10 @@ namespace RoadRunnerApp.AppRoutes
             return routeLocations;
         }
 
-        public async Task GetRouteCoordinates(List<Landmark> landmarks)
+        public async Task GetRouteCoordinates(List<Landmark> landmarks, Mlocation userLocation)
         {
     
-            List<Mlocation> decodedCoords = await HttpRequest(landmarks);
+            List<Mlocation> decodedCoords = await HttpRequest(landmarks, userLocation);
 
             // Coordinates are recieved, trigger event
             CoordinatesReceived?.Invoke(this, decodedCoords);

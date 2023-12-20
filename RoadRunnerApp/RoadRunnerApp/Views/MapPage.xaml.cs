@@ -5,9 +5,11 @@ using RoadRunnerApp.AppRoutes;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+using System.ComponentModel;
 
 
 namespace RoadRunnerApp.Views;
+
 
 public partial class MapPage : ContentPage
 {
@@ -15,7 +17,7 @@ public partial class MapPage : ContentPage
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
 
-
+   
 	public MapPage()
 	{
 		InitializeComponent();
@@ -25,13 +27,14 @@ public partial class MapPage : ContentPage
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
-
+     
         _routeService.GetLandmarks();
-        _routeService.GetRouteCoordinates(_landMarksToDraw);
+
 
         MainMap.IsShowingUser = true;
 
         MainMap.IsVisible = true;
+
         // To do:
 
         // Get/update user's realtime location on map
@@ -48,31 +51,65 @@ public partial class MapPage : ContentPage
 
         // Dummy 'DB' List for testing:
 
-        Thread updateThread = new Thread(UpdateMap);
-        updateThread.Start();
+        Thread moveMapThread = new Thread(MoveMap);
+        moveMapThread.Start();
+
+        Thread updateMapThread = new Thread(UpdateMap);
+        updateMapThread.Start();
+
+       
 
     }
 
+    
+
     public async void UpdateMap()
+    {
+        while(true)
+        {
+
+            Mlocation location = await GetUserLocation();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+
+                MainMap.MapElements.Clear();
+                _routeService.GetRouteCoordinates(_landMarksToDraw, location);
+
+            });
+
+
+            await Task.Delay(2000);
+        }
+    }
+
+   
+    public async void MoveMap()
     {
 
         while (true)
         {
+ 
 
 
             Mlocation location =  await GetUserLocation();
+            
+
 
             MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-
-
             Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
 
             Device.BeginInvokeOnMainThread(() =>
             {
+
+
                 MainMap.MoveToRegion(mapSpan);
+
+                //MainMap.MapElements.Remove(polyline);
+
             });
-            
+
+           
+
             await Task.Delay(500);
 
         }
@@ -130,10 +167,7 @@ public partial class MapPage : ContentPage
         {
             StrokeColor = Colors.Blue,
             StrokeWidth = 12,
-            Geopath =
-            {
-                
-            }
+            Geopath ={}
 
         };
 
