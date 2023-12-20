@@ -16,6 +16,7 @@ public partial class MapPage : ContentPage
 
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
+    private Polyline _originalPolyline = null;
 
    
 	public MapPage()
@@ -157,6 +158,7 @@ public partial class MapPage : ContentPage
     {
         // Handle received coordinates, e.g., draw polylines on the map
         // Use the received coordinates to draw polylines on the frontend
+   
         DrawPolyline(coordinates);
     }
 
@@ -167,16 +169,40 @@ public partial class MapPage : ContentPage
         {
             StrokeColor = Colors.Blue,
             StrokeWidth = 12,
-            Geopath ={}
-
+            Geopath = {}
         };
+
+        if (_originalPolyline == null)
+        {
+            Polyline originalPolyline = new Polyline
+            {
+                StrokeColor = Colors.Purple,
+                StrokeWidth = 12,
+                Geopath = { }
+            };
+
+            foreach (Mlocation location in locations)
+            {
+                originalPolyline.Geopath.Add(location);
+            }
+
+            _originalPolyline = originalPolyline;
+          
+
+        }
 
 
         foreach (Mlocation location in locations)
         {
             polyline.Geopath.Add(location);
+
         }
+        MainMap.MapElements.Add(_originalPolyline);
         MainMap.MapElements.Add(polyline);
+
+
+        // Save initial route so the walked route can be visualized in comparison with the "to-be-walked" route
+
 
 
     }
