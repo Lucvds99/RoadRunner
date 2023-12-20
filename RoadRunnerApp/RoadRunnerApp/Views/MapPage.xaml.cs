@@ -31,7 +31,6 @@ public partial class MapPage : ContentPage
      
         _routeService.GetLandmarks();
 
-
         MainMap.IsShowingUser = true;
 
         MainMap.IsVisible = true;
@@ -62,12 +61,33 @@ public partial class MapPage : ContentPage
 
     }
 
-    
+    public async Task<List<double>> GetLandmarkDistance(Mlocation mlocation)
+    {
+        List<double> distances = new List<double> { };
+
+        Mlocation user;
+        Mlocation poi = new Mlocation();
+
+        foreach (var landmark in _landMarksToDraw)
+        {
+            user = mlocation;
+            poi.Latitude = landmark.location.latitude;
+            poi.Longitude = landmark.location.longitude;
+
+            // British word for "meter", some weird people spell it like this, but we accept them anyways
+            double metres = Mlocation.CalculateDistance(user, poi, DistanceUnits.Kilometers) * 1000;
+            distances.Add(metres);
+        }
+
+        return distances;
+    }
+
 
     public async void UpdateMap()
     {
         while(true)
         {
+
 
             Mlocation location = await GetUserLocation();
             Device.BeginInvokeOnMainThread(() =>
@@ -79,6 +99,12 @@ public partial class MapPage : ContentPage
             });
 
 
+            List<double> distances = await GetLandmarkDistance(location);
+            foreach (double distance in distances)
+            {
+                Trace.WriteLine(distance);
+            }
+
             await Task.Delay(2000);
         }
     }
@@ -89,23 +115,15 @@ public partial class MapPage : ContentPage
 
         while (true)
         {
- 
 
-
-            Mlocation location =  await GetUserLocation();
-            
-
+            Mlocation location = await GetUserLocation();
 
             MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
             Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
             Device.BeginInvokeOnMainThread(() =>
             {
-
-
                 MainMap.MoveToRegion(mapSpan);
-
-                //MainMap.MapElements.Remove(polyline);
 
             });
 
@@ -188,7 +206,6 @@ public partial class MapPage : ContentPage
 
             _originalPolyline = originalPolyline;
           
-
         }
 
 
