@@ -68,7 +68,12 @@
 	  <Folder Include="APIadapter\" />
 	  <Folder Include="NotificationControllers\" />
 	  <Folder Include="Views\" />
-	  <Folder Include="UIControllers\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="UIControllers\Popup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
