@@ -46,7 +46,8 @@ namespace RoadRunnerApp.Views
 
             if (isButtonSelectedNL)
                 user.setLanguage("Nederlands");
-            Navigation.PushAsync(new TutorialPage(user));
+            if (isButtonSelectedENG || isButtonSelectedNL)
+                Navigation.PushAsync(new TutorialPage(user));
         }
 
         private void updateFrames()

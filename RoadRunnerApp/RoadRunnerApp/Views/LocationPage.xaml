@@ -3,41 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RoadRunnerApp.Views.LocationPage"
              Title="Locations">
-    <StackLayout>
-        <Label Text="TestLabel To see if it works" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <ScrollView>
-            
-        </ScrollView>
-        
-        <HorizontalStackLayout Padding="10" HorizontalOptions="CenterAndExpand">
+        <StackLayout Grid.Row="0">
+            <Label Text="TestLabel To see if it works" />
+
+            <ScrollView>
+                <!-- Your ScrollView content here -->
+            </ScrollView>
+        </StackLayout>
+
+        <HorizontalStackLayout Grid.Row="1" Padding="10" HorizontalOptions="CenterAndExpand">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <ImageButton  Source="museum.png"
-                     Grid.Column="0"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     Margin="0,0,40,0"
-                     HorizontalOptions="Center"
-                     Clicked="LocationsButton"/>
+                <ImageButton Source="museum.png"
+                             Grid.Column="0"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             Margin="0,0,40,0"
+                             HorizontalOptions="Center"
+                             Clicked="LocationsButton"/>
                 <ImageButton Source="compass.png"
-                     Grid.Column="1"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     HorizontalOptions="Center"
-                     Clicked="MapButton"/>
+                             Grid.Column="1"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             HorizontalOptions="Center"
+                             Clicked="MapButton"/>
                 <ImageButton Source="distance.png"
-                     Grid.Column="2"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     HorizontalOptions="Center"
-                     Margin="40,0,0,0"
-                     Clicked="RoutesButton"/>
+                             Grid.Column="2"
+                             WidthRequest="50"
+                             HeightRequest="50"
+                             HorizontalOptions="Center"
+                             Margin="40,0,0,0"
+                             Clicked="RoutesButton"/>
             </Grid>
         </HorizontalStackLayout>
-    </StackLayout>
+    </Grid>
 </ContentPage>

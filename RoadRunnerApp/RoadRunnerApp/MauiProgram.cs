@@ -1,6 +1,8 @@
 ﻿using Google.Api.Gax.Grpc.Rest;
 using Google.Maps.Routing.V2;
 using Microsoft.Extensions.Logging;
+using RoadRunnerApp.Views;
+using RoadRunnerApp.Views.Models;
 
 namespace RoadRunnerApp
 {
@@ -16,6 +18,13 @@ namespace RoadRunnerApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 }).UseMauiMaps();
+
+            builder.Services.AddSingleton<RoutesPage>();
+            builder.Services.AddSingleton<LocationPage>();
+            builder.Services.AddSingleton<routeViewModel>();
+
+            //TODO add singelton for locationviewmodel in future 
+
 
 #if DEBUG
     		builder.Logging.AddDebug();

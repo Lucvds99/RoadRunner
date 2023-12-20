@@ -9,7 +9,7 @@
             <Label Text="{Binding HeadingTo}" />
             <HorizontalStackLayout >
                 <Label Text="{Binding DistanceLeft}"/>
-                <Label HorizontalTextAlignment="End" Text="{Binding TimeLeft}"/>
+                <Label Margin="10,0,0,0" Text="{Binding TimeLeft}"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>
         
