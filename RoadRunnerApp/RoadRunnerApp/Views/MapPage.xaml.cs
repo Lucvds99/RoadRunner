@@ -6,6 +6,7 @@ using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using NavigationPage = Microsoft.Maui.Controls.NavigationPage;
+using RoadRunnerApp.Views.Models;
 
 
 namespace RoadRunnerApp.Views;
@@ -24,8 +25,10 @@ public partial class MapPage : ContentPage
 
 
         /////////////////hard coded embeding xaml 
-        
-        
+
+        RouteInformation headerInformation = new RouteInformation { HeadingTo = "Heading for: Test Heading", DistanceLeft = "Distance: 0.00km", TimeLeft = "Time Left: 0.00"};
+
+        BindingContext = headerInformation;
 
         ////////////////
  

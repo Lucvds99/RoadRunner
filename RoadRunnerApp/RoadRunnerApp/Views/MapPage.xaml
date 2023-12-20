@@ -5,11 +5,11 @@
              Shell.NavBarIsVisible="False"
              Title="Direction description">
     <StackLayout>
-        <VerticalStackLayout>
+        <VerticalStackLayout Margin="10">
             <Label Text="{Binding HeadingTo}" />
-            <HorizontalStackLayout>
+            <HorizontalStackLayout >
                 <Label Text="{Binding DistanceLeft}"/>
-                <Label Text="{Binding TimeLeft}"/>
+                <Label HorizontalTextAlignment="End" Text="{Binding TimeLeft}"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>
         
