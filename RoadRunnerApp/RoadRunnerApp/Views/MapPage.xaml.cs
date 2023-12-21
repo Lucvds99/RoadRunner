@@ -7,16 +7,20 @@ using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using NavigationPage = Microsoft.Maui.Controls.NavigationPage;
 using RoadRunnerApp.Views.Models;
+using System.ComponentModel;
+using Google.Protobuf.WellKnownTypes;
 
 
 namespace RoadRunnerApp.Views;
+
 
 public partial class MapPage : ContentPage
 {
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
+    private Polyline _originalPolyline = null;
 
-
+   
 	public MapPage()
 	{
 		InitializeComponent();
@@ -37,13 +41,13 @@ public partial class MapPage : ContentPage
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
-
+     
         _routeService.GetLandmarks();
-        _routeService.GetRouteCoordinates(_landMarksToDraw);
 
         MainMap.IsShowingUser = true;
 
         MainMap.IsVisible = true;
+
         // To do:
 
         // Get/update user's realtime location on map
@@ -60,31 +64,131 @@ public partial class MapPage : ContentPage
 
         // Dummy 'DB' List for testing:
 
-        Thread updateThread = new Thread(UpdateMap);
-        updateThread.Start();
+        Thread moveMapThread = new Thread(MoveMap);
+        moveMapThread.Start();
+
+        Thread updateMapThread = new Thread(UpdateMap);
+        updateMapThread.Start();
 
     }
 
+    public async Task<List<Tuple<Landmark, double>>> GetLandmarkDistance(Mlocation mlocation)
+    {
+        List<Tuple<Landmark, double>> distances = new List<Tuple<Landmark, double>>();
+
+        Mlocation user;
+        Mlocation poi = new Mlocation();
+
+        foreach (var landmark in _landMarksToDraw)
+        {
+            user = mlocation;
+            poi.Latitude = landmark.location.latitude;
+            poi.Longitude = landmark.location.longitude;
+
+            // British word for "meter", some weird people spell it like this, but we accept them anyways
+            double metres = Mlocation.CalculateDistance(user, poi, DistanceUnits.Kilometers) * 1000;
+            var currentDistance = new Tuple<Landmark, double> (landmark, metres);
+            distances.Add(currentDistance);
+        }
+
+        return distances;
+    }
+
+ 
+    public async Task<Tuple<Landmark, double>> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
+    {
+        Landmark closestLandmark = landmarksWithDistance[0].Item1;
+        double closestDistance = landmarksWithDistance[0].Item2;
+        Tuple<Landmark,double> closestTuple = landmarksWithDistance.First();
+
+
+        foreach (var tuple in landmarksWithDistance)
+        {
+            
+            double currentDistance = tuple.Item2;
+
+            if (currentDistance < closestDistance)
+            {
+
+                closestTuple = tuple;
+        
+            }
+            
+
+        }
+        return closestTuple;
+    }
+
+    public bool isInDistance(Tuple<Landmark, double> closestTuple)
+    {
+        if(closestTuple.Item2 <= 15)
+        {
+            return true;
+        }
+        return false;
+
+
+    }
+
+
+
     public async void UpdateMap()
+    {
+        while(true)
+        {
+
+
+            Mlocation location = await GetUserLocation();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+
+                //MainMap.MapElements.Clear();
+                _routeService.GetRouteCoordinates(_landMarksToDraw, location);
+
+            });
+
+
+            List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
+            Tuple<Landmark,double> closestTuple = await GetClosestLandmark(distances);
+
+            if (isInDistance(closestTuple))
+            {
+                Landmark closestLandmark = closestTuple.Item1;
+
+                //TODO Deze landmark gebruiken voor het aanroepen van de popup.
+            }
+            
+
+
+            foreach (Tuple<Landmark, double> distance in distances)
+            {
+                Trace.WriteLine(closestTuple);
+            }
+
+            await Task.Delay(2000);
+        }
+    }
+
+   
+    public async void MoveMap()
     {
 
         while (true)
         {
 
-
-            Mlocation location =  await GetUserLocation();
+            Mlocation location = await GetUserLocation();
 
             MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-
-
             Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
 
             Device.BeginInvokeOnMainThread(() =>
             {
                 MainMap.MoveToRegion(mapSpan);
+
             });
-            
+
+           
+
             await Task.Delay(500);
 
         }
@@ -132,6 +236,7 @@ public partial class MapPage : ContentPage
     {
         // Handle received coordinates, e.g., draw polylines on the map
         // Use the received coordinates to draw polylines on the frontend
+   
         DrawPolyline(coordinates);
     }
 
@@ -142,19 +247,40 @@ public partial class MapPage : ContentPage
         {
             StrokeColor = Colors.Blue,
             StrokeWidth = 12,
-            Geopath =
+            Geopath = {}
+        };
+
+        if (_originalPolyline == null)
+        {
+            Polyline originalPolyline = new Polyline
             {
-                
+                StrokeColor = Colors.Purple,
+                StrokeWidth = 12,
+                Geopath = { }
+            };
+
+            foreach (Mlocation location in locations)
+            {
+                originalPolyline.Geopath.Add(location);
             }
 
-        };
+            _originalPolyline = originalPolyline;
+          
+        }
 
 
         foreach (Mlocation location in locations)
         {
             polyline.Geopath.Add(location);
+
         }
+        MainMap.MapElements.Clear();
+        MainMap.MapElements.Add(_originalPolyline);
         MainMap.MapElements.Add(polyline);
+
+
+        // Save initial route so the walked route can be visualized in comparison with the "to-be-walked" route
+
 
 
     }
