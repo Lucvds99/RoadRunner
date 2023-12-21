@@ -9,6 +9,7 @@ using NavigationPage = Microsoft.Maui.Controls.NavigationPage;
 using RoadRunnerApp.Views.Models;
 using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
+using RoadRunnerApp.UIControllers;
 
 
 namespace RoadRunnerApp.Views;
@@ -103,7 +104,6 @@ public partial class MapPage : ContentPage
                 Landmark closestLandmark = closestTuple.Item1;
 
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
-            
             
                 _landMarksToVisit.Remove(closestLandmark);
                 _landMarksVisited.Add(closestLandmark);

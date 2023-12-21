@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
+using RoadRunnerApp.Views.Models;
 
 namespace RoadRunnerApp.UIControllers
 {
