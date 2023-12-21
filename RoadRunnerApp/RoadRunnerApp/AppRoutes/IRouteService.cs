@@ -12,9 +12,12 @@ namespace RoadRunnerApp.AppRoutes
     {
         event EventHandler<List<Landmark>> LandmarksRecieved;
         event EventHandler<List<Mlocation>> CoordinatesReceived;
+        event EventHandler<List<Mlocation>> ReverseCoordinatesReceived;
+
 
         void GetLandmarks();
         Task GetRouteCoordinates(List<Landmark> landmarks, Mlocation userLocation);
+        Task GetReverseRouteCoordinates(List<Landmark> landmarks, Mlocation userLocation);
 
 
     }
