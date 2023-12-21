@@ -18,7 +18,6 @@ public partial class MapPage : ContentPage
     private readonly IRouteService _routeService;
     private List<Landmark> _landMarksToDraw;
     private Polyline _originalPolyline = null;
-
    
 	public MapPage()
 	{
@@ -29,6 +28,7 @@ public partial class MapPage : ContentPage
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
+        _routeService.ReverseCoordinatesReceived += OnReverseCoordinatesReceived;
      
         _routeService.GetLandmarks();
 
@@ -59,6 +59,72 @@ public partial class MapPage : ContentPage
         updateMapThread.Start();
 
     }
+
+
+    public async void UpdateMap()
+    {
+        while (true)
+        {
+
+            Mlocation location = await GetUserLocation();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+
+                //MainMap.MapElements.Clear();
+                _routeService.GetRouteCoordinates(_landMarksToDraw, location);
+                _routeService.GetReverseRouteCoordinates(_landMarksToDraw, location);
+
+            });
+
+
+            List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
+            Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
+
+            if (isInDistance(closestTuple))
+            {
+                Landmark closestLandmark = closestTuple.Item1;
+
+                //TODO Deze landmark gebruiken voor het aanroepen van de popup.
+            }
+
+
+
+            foreach (Tuple<Landmark, double> distance in distances)
+            {
+                Trace.WriteLine(closestTuple);
+            }
+
+            await Task.Delay(2000);
+        }
+    }
+
+
+    public async void MoveMap()
+    {
+
+        while (true)
+        {
+
+            Mlocation location = await GetUserLocation();
+
+            MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+            Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                MainMap.MoveToRegion(mapSpan);
+
+            });
+
+
+
+            await Task.Delay(500);
+
+        }
+
+    }
+
+
 
     public async Task<List<Tuple<Landmark, double>>> GetLandmarkDistance(Mlocation mlocation)
     {
@@ -118,71 +184,6 @@ public partial class MapPage : ContentPage
 
     }
 
-
-
-    public async void UpdateMap()
-    {
-        while(true)
-        {
-
-
-            Mlocation location = await GetUserLocation();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-
-                //MainMap.MapElements.Clear();
-                _routeService.GetRouteCoordinates(_landMarksToDraw, location);
-
-            });
-
-
-            List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
-            Tuple<Landmark,double> closestTuple = await GetClosestLandmark(distances);
-
-            if (isInDistance(closestTuple))
-            {
-                Landmark closestLandmark = closestTuple.Item1;
-
-                //TODO Deze landmark gebruiken voor het aanroepen van de popup.
-            }
-            
-
-
-            foreach (Tuple<Landmark, double> distance in distances)
-            {
-                Trace.WriteLine(closestTuple);
-            }
-
-            await Task.Delay(2000);
-        }
-    }
-
-   
-    public async void MoveMap()
-    {
-
-        while (true)
-        {
-
-            Mlocation location = await GetUserLocation();
-
-            MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-            Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                MainMap.MoveToRegion(mapSpan);
-
-            });
-
-           
-
-            await Task.Delay(500);
-
-        }
-
-    }
-
     public async Task<Mlocation> GetUserLocation()
     {
         try
@@ -228,6 +229,35 @@ public partial class MapPage : ContentPage
         DrawPolyline(coordinates);
     }
 
+    private void OnReverseCoordinatesReceived(object sender, List<Mlocation> coordinates)
+    {
+        // Handle received coordinates, e.g., draw polylines on the map
+        // Use the received coordinates to draw polylines on the frontend
+
+
+        // To Do: Draw reverse polyline
+        DrawReversePolyline(coordinates);
+    }
+
+
+    public void DrawReversePolyline(List<Mlocation> locations)
+    {
+        Polyline reversePolyline = new Polyline
+        {
+            StrokeColor = Colors.Purple,
+            StrokeWidth = 12,
+            Geopath = { }
+        };
+
+        foreach (Mlocation location in locations)
+        {
+            reversePolyline.Geopath.Add(location);
+        }
+        MainMap.MapElements.Add(reversePolyline);
+
+
+    }
+
 
     public void DrawPolyline(List<Mlocation> locations)
     {
@@ -238,23 +268,23 @@ public partial class MapPage : ContentPage
             Geopath = {}
         };
 
-        if (_originalPolyline == null)
-        {
-            Polyline originalPolyline = new Polyline
-            {
-                StrokeColor = Colors.Purple,
-                StrokeWidth = 12,
-                Geopath = { }
-            };
+        //if (_originalPolyline == null)
+        //{
+        //    Polyline originalPolyline = new Polyline
+        //    {
+        //        StrokeColor = Colors.Purple,
+        //        StrokeWidth = 12,
+        //        Geopath = { }
+        //    };
 
-            foreach (Mlocation location in locations)
-            {
-                originalPolyline.Geopath.Add(location);
-            }
+        //    foreach (Mlocation location in locations)
+        //    {
+        //        originalPolyline.Geopath.Add(location);
+        //    }
 
-            _originalPolyline = originalPolyline;
+        //    _originalPolyline = originalPolyline;
           
-        }
+        //}
 
 
         foreach (Mlocation location in locations)
@@ -263,7 +293,7 @@ public partial class MapPage : ContentPage
 
         }
         MainMap.MapElements.Clear();
-        MainMap.MapElements.Add(_originalPolyline);
+        //MainMap.MapElements.Add(_originalPolyline);
         MainMap.MapElements.Add(polyline);
 
 
