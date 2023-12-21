@@ -1,18 +1,49 @@
 using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RoadRunnerApp.UIControllers
 {
     public partial class SimplePopup : Popup
     {
-        public SimplePopup()
+        private PopupModel _PopupModel;
+        public SimplePopup(NotificationVariant notificationVariant, string title, string content )
         {
-            InitializeComponent();
-            BindingContext = this; // Zorg ervoor dat de BindingContext is ingesteld op de huidige instantie van SimplePopup
+
+            switch (notificationVariant)
+            {
+                case NotificationVariant.ERROR:
+                        generateErrorPopup(title, content);
+                    break;
+                case NotificationVariant.STANDARD:
+                        generateStandardPopup(title, content);
+                    break;
+                case NotificationVariant.REACHED_LOCATION:
+                    generateReachedLocationPopup(title, content);
+                    break;
+            }
 
         }
 
-        public string PopupTitle { get; set; } = "Bamibal";
-        public string PopupContent { get; set; } = "We hebben een soort popup I guess?";
-        public string PopupImageSource { get; set; } = "arnokin.png"; // Vervang dit met het juiste pad naar je afbeelding
+        private void generateReachedLocationPopup(string title, string content)
+        {
+            _PopupModel = new PopupModel { PopupTitle = title, PopupContent = content , PopupImageSource = "", HasButton1 = false, HasButton2 = false };
+            BindingContext = _PopupModel;
+            InitializeComponent();
+        }
+
+        public void generateErrorPopup(string title, string content)
+        {
+            _PopupModel = new PopupModel { PopupTitle = title, PopupContent = content , PopupImageSource = "", HasButton1 = false, HasButton2 = false };
+            BindingContext = _PopupModel;
+            InitializeComponent();
+        }
+        public void generateStandardPopup(string title, string content)
+        {
+            _PopupModel = new PopupModel {PopupTitle = title, PopupContent = content , PopupImageSource = "", PopupButtonText1="continue", HasButton1=true, HasButton2=false};
+            BindingContext = _PopupModel;
+            InitializeComponent();
+        }
+
+
     }
 }
