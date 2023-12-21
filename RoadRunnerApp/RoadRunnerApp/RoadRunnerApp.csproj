@@ -63,8 +63,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="APIadapter\" />
 	  <Folder Include="DatabaseControllers\" />
+	  <Folder Include="AppRoutes\" />
+	  <Folder Include="APIadapter\" />
 	  <Folder Include="NotificationControllers\" />
 	  <Folder Include="Views\" />
 	  <Folder Include="UIControllers\" />
