@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace RoadRunnerApp.Views;
@@ -20,15 +21,13 @@ public partial class MapPage : ContentPage
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
-   
+    private bool permissionGranted = false;
 	public MapPage()
 	{
 		InitializeComponent();
 
         _routeService = new RouteManager();
         _landmarksToDraw = new List<Landmark>();
- 
-   
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
@@ -58,52 +57,67 @@ public partial class MapPage : ContentPage
 
         // Dummy 'DB' List for testing:
 
+
+
+
         Thread moveMapThread = new Thread(MoveMap);
         moveMapThread.Start();
 
         Thread updateMapThread = new Thread(UpdateMap);
         updateMapThread.Start();
-
     }
+
+ 
 
 
     public async void UpdateMap()
     {
-        while (true)
-        {
 
-            Mlocation location = await GetUserLocation();
-            Device.BeginInvokeOnMainThread(() =>
+
+
+
+            while (true)
             {
 
-                //MainMap.MapElements.Clear();
-                _routeService.GetRouteCoordinates(_landMarksToVisit, location);
-                _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
-
-            });
 
 
-            List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
-            Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
-
-            if (isInDistance(closestTuple))
+            if (!permissionGranted)
             {
-                Landmark closestLandmark = closestTuple.Item1;
-
-                _landMarksToVisit.Remove(closestLandmark);
-                _landMarksVisited.Add(closestLandmark);
-
-
+                continue;
             }
+                Mlocation location = await GetUserLocation();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+
+                    //MainMap.MapElements.Clear();
+                    _routeService.GetRouteCoordinates(_landMarksToVisit, location);
+                    _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
+
+                });
+
+
+                List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
+                Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
+
+                if (isInDistance(closestTuple))
+                {
+                    Landmark closestLandmark = closestTuple.Item1;
+
+                    _landMarksToVisit.Remove(closestLandmark);
+                    _landMarksVisited.Add(closestLandmark);
+
+
+                }
 
 
 
-            foreach (Tuple<Landmark, double> distance in distances)
-            {
-                Trace.WriteLine(closestTuple);
-            }
+                foreach (Tuple<Landmark, double> distance in distances)
+                {
+                    Trace.WriteLine(closestTuple);
+                }
 
-            await Task.Delay(4000);
+                await Task.Delay(4000);
+            
         }
     }
 
@@ -111,26 +125,32 @@ public partial class MapPage : ContentPage
     public async void MoveMap()
     {
 
-        while (true)
-        {
-
-            Mlocation location = await GetUserLocation();
-
-            MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-            Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
-            Device.BeginInvokeOnMainThread(() =>
+       
+            while (true)
             {
-                MainMap.MoveToRegion(mapSpan);
+                PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                if (status == PermissionStatus.Granted)
+                {
+                permissionGranted = true;
 
-            });
+                Mlocation location = await GetUserLocation();
+
+                MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+                Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    MainMap.MoveToRegion(mapSpan);
+
+                });
 
 
 
-            await Task.Delay(500);
+                await Task.Delay(500);
+
+            }
 
         }
-
     }
 
 
