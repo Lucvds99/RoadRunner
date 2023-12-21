@@ -1,3 +1,4 @@
+using Bumptech.Glide.Load.Resource.Bitmap;
 using RoadRunnerApp.UIControllers;
 using RoadRunnerApp.Views.Models;
 
@@ -17,10 +18,9 @@ public partial class TutorialPage : ContentPage
         //Items for in the Carousel in Tutorial page
         var items = new List<CarouselItem>
         {
-            new CarouselItem {Title = "page 1", Description = lorem, Image = "testpicture.png", hasButton=false},
-            new CarouselItem {Title = "page 2", Description = lorem, Image = "testpicture.png", hasButton=false},
-            new CarouselItem {Title = "page 3", Description = lorem, Image = "", hasButton=false},
-            new CarouselItem {Title = "page 4", Description = lorem, Image = "", Button = "continue", hasButton=true}
+            new CarouselItem {Title = "Navigatie", Description = "de buttons onder op de map Page worden gebruikt om te navigeren naar de andere pagina's. de linker pagina wordt gebruikt voor de individuele monumenten. De rechter pagina wordt gebruikt voor de Routes. En de middelste pagina is de map.", Image = "testpicture.png", hasButton=false},
+            new CarouselItem {Title = "Route", Description = "De bezienswaardig heden in een route worden weergegeven met een rode marker. als je naar de marker loopt krijg je binnen een afstand van 15 meter een popup met informatie over de Locatie", Image = "testpicture.png", hasButton=false},
+            new CarouselItem {Title = "ben jij er klaar voor ? ", Description = "ben jij klaar voor de route die jij gaat lopen in de mooie stad Breda!", Image = "", Button = "continue", hasButton=true}
         };
         carouselView.ItemsSource = items;
     }
