@@ -8,8 +8,8 @@
         <Label Text="{Binding PopupTitle}" FontSize="20" FontAttributes="Bold" Margin="20" TextColor="Black"/>
         <Label Text="{Binding PopupContent}" Margin="10" TextColor="Black"/>
         <Image Source="{Binding PopupImageSource}" HeightRequest="100" WidthRequest="100" Margin="20"/>
-        <Button button1="{Binding PopupButton1}" Margin="20"
-        <Button button2="{Binding PopupButton1}" Margin="20"
+        <!--<Button button1="{Binding PopupButton1}" Margin="20"/>
+        <Button button2="{Binding PopupButton1}" Margin="20"/>-->
     </VerticalStackLayout>
 
 </toolkit:Popup>
