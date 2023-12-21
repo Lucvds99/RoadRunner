@@ -130,7 +130,7 @@ public partial class MapPage : ContentPage
             Device.BeginInvokeOnMainThread(() =>
             {
 
-                MainMap.MapElements.Clear();
+                //MainMap.MapElements.Clear();
                 _routeService.GetRouteCoordinates(_landMarksToDraw, location);
 
             });
@@ -262,6 +262,7 @@ public partial class MapPage : ContentPage
             polyline.Geopath.Add(location);
 
         }
+        MainMap.MapElements.Clear();
         MainMap.MapElements.Add(_originalPolyline);
         MainMap.MapElements.Add(polyline);
 
