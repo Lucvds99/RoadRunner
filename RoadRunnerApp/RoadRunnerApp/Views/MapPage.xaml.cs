@@ -23,6 +23,7 @@ public partial class MapPage : ContentPage
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
+    private bool permissionGranted = false;
    
 	public MapPage()
 	{
@@ -86,6 +87,11 @@ public partial class MapPage : ContentPage
         while (true)
         {
 
+            if (!permissionGranted)
+            {
+                continue;
+            }
+
             Mlocation location = await GetUserLocation();
             Device.BeginInvokeOnMainThread(() =>
             {
@@ -102,6 +108,7 @@ public partial class MapPage : ContentPage
 
             if (isInDistance(closestTuple))
             {
+                
                 Landmark closestLandmark = closestTuple.Item1;
 
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
@@ -109,9 +116,10 @@ public partial class MapPage : ContentPage
                 {
                     this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location"));
                 });
-            
+
                 _landMarksToVisit.Remove(closestLandmark);
                 _landMarksVisited.Add(closestLandmark);
+               
 
 
             }
@@ -133,23 +141,29 @@ public partial class MapPage : ContentPage
 
         while (true)
         {
-
-            Mlocation location = await GetUserLocation();
-
-            MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-            Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
-            Device.BeginInvokeOnMainThread(() =>
+            PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (status == PermissionStatus.Granted)
             {
-                MainMap.MoveToRegion(mapSpan);
 
-            });
+                permissionGranted = true;
 
 
-            await Task.Delay(500);
+                Mlocation location = await GetUserLocation();
 
+                MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+                Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    MainMap.MoveToRegion(mapSpan);
+
+                });
+
+
+                await Task.Delay(500);
+
+            }
         }
-
     }
 
 
