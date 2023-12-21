@@ -73,7 +73,7 @@ namespace RoadRunnerApp.AppRoutes
             Landmark destination = landmarks.Last();
 
             // Remove first and last landmarks so we can have all the intermediate landmarks
-            copiedLandmarks.Remove(copiedLandmarks.First<Landmark>());
+
             copiedLandmarks.Remove(copiedLandmarks.Last<Landmark>());
 
             Waypoint[] intermediatePoints = new Waypoint[copiedLandmarks.Count];
@@ -113,14 +113,25 @@ namespace RoadRunnerApp.AppRoutes
 
 
                 Mlocation originalStart = _initialStartLocation;
-            
+            List<Landmark> copiedLandmarks = new List<Landmark>(landmarks);
+
+
+            copiedLandmarks.Reverse();
+
+            Waypoint[] intermediatePoints = new Waypoint[copiedLandmarks.Count];
+
+            for (int i = 0; i < copiedLandmarks.Count; i++)
+            {
+                Landmark currentLandmark = copiedLandmarks[i];
+                intermediatePoints[i] = new Waypoint(new Location(currentLandmark.location.latitude, currentLandmark.location.longitude), currentLandmark.name, "address");
+            }
 
 
             Request routeRequest = new Request
             {
 
                 origin = new Waypoint(new Location(userLocation.Latitude, userLocation.Longitude), "user", "banaan"),
-                intermediates = [],
+                intermediates = intermediatePoints,
                 destination = new Waypoint(new Location(originalStart.Latitude, originalStart.Longitude), "banaan", "banaan"),
                 travelMode = "WALK"
                 //intermediates = new Waypoint[] { new Waypoint(new Location(51.5941117, 4.7794167), "henk", "gayweg 7") }

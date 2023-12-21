@@ -16,7 +16,9 @@ public partial class MapPage : ContentPage
 {
 
     private readonly IRouteService _routeService;
-    private List<Landmark> _landMarksToDraw;
+    private List<Landmark> _landmarksToDraw;
+    private List<Landmark> _landMarksToVisit;
+    private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
    
 	public MapPage()
@@ -24,13 +26,17 @@ public partial class MapPage : ContentPage
 		InitializeComponent();
 
         _routeService = new RouteManager();
-        _landMarksToDraw = new List<Landmark>();
+        _landmarksToDraw = new List<Landmark>();
+ 
+   
 
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
         _routeService.ReverseCoordinatesReceived += OnReverseCoordinatesReceived;
      
         _routeService.GetLandmarks();
+        _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
+        _landMarksVisited = new List<Landmark>();
 
         MainMap.IsShowingUser = true;
 
@@ -71,20 +77,23 @@ public partial class MapPage : ContentPage
             {
 
                 //MainMap.MapElements.Clear();
-                _routeService.GetRouteCoordinates(_landMarksToDraw, location);
-                _routeService.GetReverseRouteCoordinates(_landMarksToDraw, location);
+                _routeService.GetRouteCoordinates(_landMarksToVisit, location);
+                _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
 
             });
 
 
-            List<Tuple<Landmark, double>> distances = await GetLandmarkDistance(location);
+            List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
             Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
 
             if (isInDistance(closestTuple))
             {
                 Landmark closestLandmark = closestTuple.Item1;
 
-                //TODO Deze landmark gebruiken voor het aanroepen van de popup.
+                _landMarksToVisit.Remove(closestLandmark);
+                _landMarksVisited.Add(closestLandmark);
+
+
             }
 
 
@@ -94,7 +103,7 @@ public partial class MapPage : ContentPage
                 Trace.WriteLine(closestTuple);
             }
 
-            await Task.Delay(2000);
+            await Task.Delay(4000);
         }
     }
 
@@ -126,14 +135,14 @@ public partial class MapPage : ContentPage
 
 
 
-    public async Task<List<Tuple<Landmark, double>>> GetLandmarkDistance(Mlocation mlocation)
+    public async Task<List<Tuple<Landmark, double>>> GetLandmarksDistance(Mlocation mlocation)
     {
         List<Tuple<Landmark, double>> distances = new List<Tuple<Landmark, double>>();
 
         Mlocation user;
         Mlocation poi = new Mlocation();
 
-        foreach (var landmark in _landMarksToDraw)
+        foreach (var landmark in _landMarksToVisit)
         {
             user = mlocation;
             poi.Latitude = landmark.location.latitude;
@@ -216,8 +225,8 @@ public partial class MapPage : ContentPage
 
     private void OnLandmarksReceived(object sender, List<Landmark> landmarks)
     {
-        this._landMarksToDraw = landmarks;
-        Drawpins(_landMarksToDraw);
+        _landmarksToDraw = landmarks;
+        Drawpins(_landmarksToDraw);
     }
 
 
