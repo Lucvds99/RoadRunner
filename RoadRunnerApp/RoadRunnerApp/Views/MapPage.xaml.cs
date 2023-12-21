@@ -10,6 +10,7 @@ using RoadRunnerApp.Views.Models;
 using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
 using RoadRunnerApp.UIControllers;
+using CommunityToolkit.Maui.Views;
 
 
 namespace RoadRunnerApp.Views;
@@ -104,6 +105,10 @@ public partial class MapPage : ContentPage
                 Landmark closestLandmark = closestTuple.Item1;
 
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location"));
+                });
             
                 _landMarksToVisit.Remove(closestLandmark);
                 _landMarksVisited.Add(closestLandmark);
