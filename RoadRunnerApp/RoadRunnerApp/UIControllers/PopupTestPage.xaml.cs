@@ -12,5 +12,9 @@ public partial class PopupTestPage : ContentPage
 	private void LetPopupBeShowed(object sender, EventArgs e)
 	{
 		this.ShowPopup(new SimplePopup());
-	}
+        int secondsToVibrate = 1;
+        TimeSpan vibrationLength = TimeSpan.FromSeconds(secondsToVibrate);
+
+        Vibration.Default.Vibrate(vibrationLength);
+    }
 }

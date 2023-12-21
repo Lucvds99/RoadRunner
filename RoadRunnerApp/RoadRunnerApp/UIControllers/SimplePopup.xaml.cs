@@ -8,6 +8,7 @@ namespace RoadRunnerApp.UIControllers
         {
             InitializeComponent();
             BindingContext = this; // Zorg ervoor dat de BindingContext is ingesteld op de huidige instantie van SimplePopup
+
         }
 
         public string PopupTitle { get; set; } = "Bamibal";
