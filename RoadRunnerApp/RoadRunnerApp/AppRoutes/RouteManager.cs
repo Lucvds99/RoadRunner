@@ -38,7 +38,7 @@ namespace RoadRunnerApp.AppRoutes
         {
            
         }
-        // To Do: Je moeder.
+        // Removed "je moeder" from system due to stack overflow exception.
 
         private static string url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
