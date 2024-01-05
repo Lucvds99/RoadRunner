@@ -3,7 +3,7 @@ using SQLite;
 
 namespace RoadRunnerApp.AppDatabase;
 
-class DatabaseManager
+public class DatabaseManager
 {
     private QueryBuilder _queryBuilder;
     private SQLiteConnection sqlite_conn;
