@@ -63,20 +63,29 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Google.Maps.Routing.V2" Version="1.0.0-beta10" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+
+
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Maui.Maps" Version="8.0.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PolylineEncoder.Net" Version="1.0.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="sqlite-net" Version="1.6.292" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.141-beta" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.7" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="APIadapter\" />
 	  <Folder Include="DatabaseControllers\" />
+	  <Folder Include="AppRoutes\" />
+	  <Folder Include="APIadapter\" />
+	  <Folder Include="Data\" />
 	  <Folder Include="NotificationControllers\" />
+	  <Folder Include="Views\" />
+	  <Folder Include="UIControllers\" />
 	</ItemGroup>
 
 	<ItemGroup>
