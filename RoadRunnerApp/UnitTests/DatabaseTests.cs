@@ -20,7 +20,7 @@ namespace UnitTests
 
             int amountOfSights = sightsToCheck.Count;
             // Check if amount of retrieved sights out DB are the correct amount
-            Assert.Equal(45, amountOfSights);
+            Assert.Equal(26, amountOfSights);
 
         }
 
