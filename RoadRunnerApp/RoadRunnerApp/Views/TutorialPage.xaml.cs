@@ -1,4 +1,3 @@
-using Bumptech.Glide.Load.Resource.Bitmap;
 using RoadRunnerApp.UIControllers;
 using RoadRunnerApp.Views.Models;
 
