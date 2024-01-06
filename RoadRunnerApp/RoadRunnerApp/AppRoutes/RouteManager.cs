@@ -14,6 +14,7 @@ using System.Text.Json.Nodes;
 using static Google.Rpc.Context.AttributeContext.Types;
 using PolylineEncoder.Net.Utility;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
+using RoadRunnerApp.AppDatabase;
 
 
 
@@ -34,9 +35,11 @@ namespace RoadRunnerApp.AppRoutes
 
         public List<Mlocation> decodedCoordinates { get; set; }
 
+        private DatabaseManager _dbManager;
+
         public RouteManager()
         {
-           
+            _dbManager = new DatabaseManager();
         }
         // Removed "je moeder" from system due to stack overflow exception.
 
@@ -211,17 +214,33 @@ namespace RoadRunnerApp.AppRoutes
         public void GetLandmarks() //Change to Task later
         {
             // To do: Link this method with database so we get actual landmarks from DB
-            
-            
+
+
             // Test List
             List<Landmark> retrievedLandmarks = new List<Landmark>();
-            retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775, 4.782)));
-            retrievedLandmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117, 4.7794167)));
-            retrievedLandmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925, 4.779695)));
-            retrievedLandmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117, 4.7761667)));
-            retrievedLandmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333, 4.775278)));
-            retrievedLandmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283, 4.7763333)));
-            retrievedLandmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875, 4.7761111)));
+
+
+            List<Sight> sightsFromDB = _dbManager.GetAllSights();
+
+            foreach (Sight sight in sightsFromDB)
+            {
+                retrievedLandmarks.Add(new Landmark(sight.Id,
+                    sight.Name,
+                    sight.Description,
+                    sight.Category.ToString(),
+                    new CustomLocation(sight.Latitude, sight.Longitude)));
+            }
+
+
+
+
+            //retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775, 4.782)));
+            //retrievedLandmarks.Add(new Landmark(1, "VVV-pand", "oulleh", "eets", new AppRoutes.CustomLocation(51.5941117, 4.7794167)));
+            //retrievedLandmarks.Add(new Landmark(1, "Nassau Baronie Monument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5925, 4.779695)));
+            //retrievedLandmarks.Add(new Landmark(1, "Kasteel van Breda", "oulleh", "eets", new AppRoutes.CustomLocation(51.5906117, 4.7761667)));
+            //retrievedLandmarks.Add(new Landmark(1, "Grote Kerk", "oulleh", "eets", new AppRoutes.CustomLocation(51.5888333, 4.775278)));
+            //retrievedLandmarks.Add(new Landmark(1, "Bevrijdingsmonument", "oulleh", "eets", new AppRoutes.CustomLocation(51.5880283, 4.7763333)));
+            //retrievedLandmarks.Add(new Landmark(1, "Stadhuis", "oulleh", "eets", new AppRoutes.CustomLocation(51.58875, 4.7761111)));
 
 
             LandmarksRecieved?.Invoke(this, retrievedLandmarks);

@@ -150,7 +150,7 @@ public partial class MapPage : ContentPage
 
                 Mlocation location = await GetUserLocation();
 
-                MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+                MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
                 Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
                 Device.BeginInvokeOnMainThread(() =>
