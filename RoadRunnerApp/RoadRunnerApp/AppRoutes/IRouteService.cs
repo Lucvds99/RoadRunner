@@ -16,6 +16,8 @@ namespace RoadRunnerApp.AppRoutes
 
 
         void GetLandmarks();
+
+        void GetLandmarksFromRoute(int routeId);
         Task GetRouteCoordinates(List<Landmark> landmarks, Mlocation userLocation);
         Task GetReverseRouteCoordinates(List<Landmark> landmarks, Mlocation userLocation);
 

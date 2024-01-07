@@ -48,8 +48,9 @@ public partial class MapPage : ContentPage
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
         _routeService.ReverseCoordinatesReceived += OnReverseCoordinatesReceived;
+
      
-        _routeService.GetLandmarks();
+        _routeService.GetLandmarksFromRoute(1);
         _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
         _landMarksVisited = new List<Landmark>();
 

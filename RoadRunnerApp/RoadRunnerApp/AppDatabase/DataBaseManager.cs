@@ -355,8 +355,30 @@ public class DatabaseManager
         sightRouteLinks.Add(new SightRouteLink { Id = 1, RouteId = 1, SightId = 1 });
         sightRouteLinks.Add(new SightRouteLink { Id = 2, RouteId = 1, SightId = 2 });
         sightRouteLinks.Add(new SightRouteLink { Id = 3, RouteId = 1, SightId = 3 });
-        sightRouteLinks.Add(new SightRouteLink { Id = 4, RouteId = 2, SightId = 2 });
-        sightRouteLinks.Add(new SightRouteLink { Id = 5, RouteId = 2, SightId = 3 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 4, RouteId = 1, SightId = 4 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 5, RouteId = 1, SightId = 5 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 6, RouteId = 1, SightId = 6 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 7, RouteId = 1, SightId = 7 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 8, RouteId = 1, SightId = 8 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 9, RouteId = 1, SightId = 9 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 10, RouteId = 1, SightId = 10 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 11, RouteId = 1, SightId = 11 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 12, RouteId = 1, SightId = 12 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 13, RouteId = 1, SightId = 13 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 14, RouteId = 1, SightId = 14 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 15, RouteId = 1, SightId = 15 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 16, RouteId = 1, SightId = 16 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 17, RouteId = 1, SightId = 17 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 18, RouteId = 1, SightId = 18 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 19, RouteId = 1, SightId = 19 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 20, RouteId = 1, SightId = 20 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 21, RouteId = 1, SightId = 21 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 22, RouteId = 1, SightId = 22 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 23, RouteId = 1, SightId = 23 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 24, RouteId = 1, SightId = 24 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 25, RouteId = 1, SightId = 25 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 26, RouteId = 1, SightId = 26 });
+
 
         this.sqlite_conn.InsertAll(sightRouteLinks);
 
