@@ -106,6 +106,7 @@ public partial class MapPage : ContentPage
 
             List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
             Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
+            Trace.WriteLine("ClosestTuple = " +  closestTuple.Item1.name + ":" + closestTuple.Item2);
 
             if (isInDistance(closestTuple))
             {
@@ -145,14 +146,13 @@ public partial class MapPage : ContentPage
             PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
             if (status == PermissionStatus.Granted)
             {
-                Trace.WriteLine("HALLOOOOOO");
+                Thread.Sleep(100);
                 break;
             }
            
         }
 
         permissionGranted = true;
-        Trace.WriteLine("Ik heb rechten");
 
 
         Mlocation location = await GetUserLocation();
@@ -195,9 +195,9 @@ public partial class MapPage : ContentPage
  
     public async Task<Tuple<Landmark, double>> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
     {
-        Landmark closestLandmark = landmarksWithDistance[0].Item1;
-        double closestDistance = landmarksWithDistance[0].Item2;
+        
         Tuple<Landmark,double> closestTuple = landmarksWithDistance.First();
+        double closestDistance = closestTuple.Item2;
 
 
         foreach (var tuple in landmarksWithDistance)
@@ -209,6 +209,7 @@ public partial class MapPage : ContentPage
             {
 
                 closestTuple = tuple;
+                closestDistance = closestTuple.Item2;
         
             }
             
