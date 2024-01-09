@@ -23,14 +23,41 @@ public partial class LocationPage : ContentPage
 
         foreach (var landmark in _landmarks)
         {
-            _locationCollection.Add(new locationItem { LocationName = landmark.name, ImageSource = landmark.ImgFilePath });
+            _locationCollection.Add(new locationItem {Id = landmark.id.ToString(), LocationName = landmark.name, ImageSource = landmark.ImgFilePath });
         }
+
         collectionView.ItemsSource = _locationCollection;
     }
+    private void OnFrameTapped(object sender, EventArgs e)
+    {
+        if (sender is Frame tappedFrame && tappedFrame.BindingContext is locationItem tappedItem)
+        {
+            string frameId = tappedItem.Id;
+
+            // Now you can use frameId as needed, for example, printing to the console
+            Console.WriteLine($"Frame with Id {frameId} tapped!");
+
+            // Retrieve the corresponding Landmark from the list based on the Id
+            Landmark correspondingLandmark = _landmarks.FirstOrDefault(landmark => landmark.id.ToString() == frameId);
+
+            if (correspondingLandmark != null)
+            {
+                // Now you have the Landmark, and you can use it as needed
+                Console.WriteLine($"Corresponding Landmark: {correspondingLandmark.name}");
+
+                // Or use the Landmark for further actions, e.g., navigating to a detail page with the Landmark as a parameter
+                Navigation.PushAsync(new detailPage(correspondingLandmark, this));
+            }
+        }
+    }
+
+
+
+
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new detailPage());
+
     }
 
     private void MapButton(object sender, EventArgs e)

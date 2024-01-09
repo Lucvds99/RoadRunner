@@ -19,9 +19,6 @@
         <VerticalStackLayout Grid.Row="2">
             <Image x:Name="image" Source="{Binding Image}"/>
             <Label x:Name="Description" Text="{Binding Description}" Margin="10,0,0,10"/>
-                
-            <!-- Button only visible and active on last page -->
-            <Button x:Name="SelectRoute" Clicked="selectRouteClicked" Text="{Binding Button}"  IsVisible="{Binding hasButton}" IsEnabled="{Binding hasButton}"/>
         </VerticalStackLayout>
         <Button x:Name="backButton" Clicked="goBackClicked" Margin="10"  Text="Go back" Grid.Row="3"/>
     </Grid>
