@@ -20,14 +20,14 @@ namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
-    private readonly IRouteService _routeService;
+    private readonly RouteManager _routeService;
     private List<Landmark> _landmarksToDraw;
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
     private bool permissionGranted = false;
    
-	public MapPage()
+	public MapPage(RouteManager? routeManager)
 	{
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
@@ -41,8 +41,16 @@ public partial class MapPage : ContentPage
         BindingContext = headerInformation;
 
         ////////////////
+        
+        if (routeManager != null)
+        {
+            _routeService = routeManager;
+        }
+        else
+        {
+            _routeService = new RouteManager();
+        }
  
-        _routeService = new RouteManager();
         _landmarksToDraw = new List<Landmark>();
  
    
@@ -378,7 +386,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage());
+        Navigation.PushAsync(new LocationPage(_routeService));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -388,6 +396,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage());
+        Navigation.PushAsync(new RoutesPage(_routeService));
     }
 }

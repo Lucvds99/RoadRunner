@@ -12,16 +12,18 @@ namespace RoadRunnerApp.AppRoutes
         public string name { get; }
         public string description { get; }
         public string theme { get; }
+        public string ImgFilePath { get; }
         public CustomLocation location { get; }
 
         // Constructor Ouleh
-        public Landmark(int id, string name, string description, string theme, CustomLocation location)
+        public Landmark(int id, string name, string description, string theme, string ImgFilePath, CustomLocation location)
         {
             this.id = id;
             this.name = name;
             this.description = description;
             this.theme = theme;
             this.location = location;
+            this.ImgFilePath = ImgFilePath;
         }
 
 

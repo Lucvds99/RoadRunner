@@ -26,12 +26,12 @@ public partial class TutorialPage : ContentPage
     public void onButtonClick(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(null));
     }
 
     public void onButtonClickSkip(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(null));
     }
 }
