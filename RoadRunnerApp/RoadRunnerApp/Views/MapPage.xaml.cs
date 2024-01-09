@@ -140,31 +140,32 @@ public partial class MapPage : ContentPage
     public async void MoveMap()
     {
 
-        while (true)
+            while (true)
         {
             PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
             if (status == PermissionStatus.Granted)
             {
-
-                permissionGranted = true;
-
-
-                Mlocation location = await GetUserLocation();
-
-                MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
-                Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    MainMap.MoveToRegion(mapSpan);
-
-                });
-
-
-                await Task.Delay(500);
-
+                Trace.WriteLine("HALLOOOOOO");
+                break;
             }
+           
         }
+
+        permissionGranted = true;
+        Trace.WriteLine("Ik heb rechten");
+
+
+        Mlocation location = await GetUserLocation();
+
+        MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
+        Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
+
+        Device.BeginInvokeOnMainThread(() =>
+        {
+            MainMap.MoveToRegion(mapSpan);
+
+        });
+
     }
 
 
