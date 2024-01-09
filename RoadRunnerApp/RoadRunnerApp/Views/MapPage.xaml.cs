@@ -18,7 +18,7 @@ namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
-    private readonly IRouteService _routeService;
+    private RouteManager _routeService;
     private List<Landmark> _landmarksToDraw;
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
@@ -39,7 +39,10 @@ public partial class MapPage : ContentPage
         BindingContext = headerInformation;
 
         ////////////////
- 
+        ///
+
+
+
         _routeService = new RouteManager();
         _landmarksToDraw = new List<Landmark>();
  
@@ -100,6 +103,9 @@ public partial class MapPage : ContentPage
                 //MainMap.MapElements.Clear();
                 _routeService.GetRouteCoordinates(_landMarksToVisit, location);
                 _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
+                RouteInformation jemoeder = new RouteInformation { HeadingTo = $"Heading for {_landMarksToVisit[0].name}", DistanceLeft = $"Distance left = {_routeService.distance} km", TimeLeft = $"Time left = {_routeService.timeLeft} min" };
+
+                BindingContext = jemoeder;
 
             });
 
