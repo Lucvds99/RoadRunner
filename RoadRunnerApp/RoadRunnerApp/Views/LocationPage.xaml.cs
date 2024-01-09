@@ -18,7 +18,6 @@ public partial class LocationPage : ContentPage
 
         _routeManager = routeManager;
         _locationCollection = new ObservableCollection<locationItem>();
-
         _landmarks = _routeManager.GetLandmarks();
 
         foreach (var landmark in _landmarks)
@@ -50,9 +49,6 @@ public partial class LocationPage : ContentPage
             }
         }
     }
-
-
-
 
 
     private void LocationsButton(object sender, EventArgs e)
