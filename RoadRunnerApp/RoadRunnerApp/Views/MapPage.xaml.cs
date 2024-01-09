@@ -126,7 +126,7 @@ public partial class MapPage : ContentPage
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location"));
+                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location", "imageLOL"));
                 });
 
                 _landMarksToVisit.Remove(closestLandmark);
@@ -270,7 +270,7 @@ public partial class MapPage : ContentPage
             pin.MarkerClicked += async (s, args) =>
             {
                 args.HideInfoWindow = true;
-                SimplePopup popup = new SimplePopup(NotificationVariant.STANDARD, landmark.name,  landmark.description);
+                SimplePopup popup = new SimplePopup(NotificationVariant.STANDARD, landmark.name,  landmark.description, landmark.ImgFilePath);
                 this.ShowPopup(popup);
             };
 

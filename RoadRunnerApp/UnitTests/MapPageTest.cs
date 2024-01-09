@@ -4,7 +4,7 @@ namespace UnitTests
 {
     public class MapPageTest()
     {
-        MapPage mapPage = new MapPage();
+        MapPage mapPage = new MapPage(new RoadRunnerApp.AppRoutes.RouteManager());
         [Fact]
         public void CheckClosestLandmark()
         {
