@@ -11,6 +11,8 @@ using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
 using RoadRunnerApp.UIControllers;
 using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Alerts;
+using System.Net.NetworkInformation;
 
 
 namespace RoadRunnerApp.Views;
@@ -254,7 +256,16 @@ public partial class MapPage : ContentPage
             double latitude = landmark.location.latitude;
 
             Microsoft.Maui.Devices.Sensors.Location pinlocation = new Microsoft.Maui.Devices.Sensors.Location(latitude, longitude);
-            MainMap.Pins.Add(new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place });
+            Pin pin = new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place };
+            MainMap.Pins.Add(pin);
+
+            pin.MarkerClicked += async (s, args) =>
+            {
+                args.HideInfoWindow = true;
+                SimplePopup popup = new SimplePopup(NotificationVariant.STANDARD, landmark.name,  landmark.description);
+                this.ShowPopup(popup);
+            };
+
         }
         
     }
@@ -262,7 +273,23 @@ public partial class MapPage : ContentPage
     private void OnLandmarksReceived(object sender, List<Landmark> landmarks)
     {
         _landmarksToDraw = landmarks;
+
         Drawpins(_landmarksToDraw);
+
+        // Asign popup information to each Pin 
+
+        //foreach (Pin pin in MainMap.Pins)
+        //{
+
+            
+
+        //}
+
+    }
+
+    private void AssignPopupsToPins()
+    {
+
     }
 
 
