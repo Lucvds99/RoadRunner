@@ -3,7 +3,7 @@ using SQLite;
 
 namespace RoadRunnerApp.AppDatabase;
 
-class DatabaseManager
+public class DatabaseManager
 {
     private QueryBuilder _queryBuilder;
     private SQLiteConnection sqlite_conn;
@@ -22,6 +22,7 @@ class DatabaseManager
             Console.WriteLine($"Exception during database initialization: {ex.Message}");
             throw; // Rethrow the exception to ensure it's not silently ignored
         }
+
 
         if (!CheckForData()) InitializeDatabase(); //TODO: ! voor CheckForData()
 
@@ -117,45 +118,20 @@ class DatabaseManager
             Category = Categories.Monument,
             ImgFilePath = "4"
         });
+
         sights.Add(new Sight
         {
             Id = 4,
-            Longitude = 4.7793883333,
-            Latitude = 51.5925,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 5,
             Longitude = 4.7784716667,
             Latitude = 51.5928333333,
             Name = "The Light House",
             Description = "",
             ImgFilePath = "5"
         });
+
         sights.Add(new Sight
         {
-            Id = 6,
-            Longitude = 4.7779166667,
-            Latitude = 51.5926666667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 7,
-            Longitude = 4.777,
-            Latitude = 51.5906116667,
-            Name = "",
-            Description = "",
-            ImgFilePath = "13"
-        });
-        sights.Add(new Sight
-        {
-            Id = 8,
+            Id = 5,
             Longitude = 4.7761666667,
             Latitude = 51.5906116667,
             Name = "Kasteel van Breda",
@@ -164,7 +140,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 9,
+            Id =6,
             Longitude = 4.7761383333,
             Latitude = 51.589695,
             Name = "Stadhouderspoort",
@@ -173,25 +149,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 10,
-            Longitude = 4.776,
-            Latitude = 51.5903333333,
-            Name = "",
-            Description = "",
-            ImgFilePath = "8"
-        });
-        sights.Add(new Sight
-        {
-            Id = 11,
-            Longitude = 4.775,
-            Latitude = 51.5903883333,
-            Name = "",
-            Description = "",
-            ImgFilePath = "7"
-        });
-        sights.Add(new Sight
-        {
-            Id = 12,
+            Id = 7,
             Longitude = 4.7743616667,
             Latitude = 51.5900283333,
             Name = "Huis van Brecht",
@@ -200,7 +158,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 13,
+            Id = 8,
             Longitude = 4.773445,
             Latitude = 51.590195,
             Name = "Spanjaardsgat",
@@ -209,7 +167,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 14,
+            Id = 9,
             Longitude = 4.7733333333,
             Latitude = 51.5898333333,
             Name = "Begin Vismarkt",
@@ -218,7 +176,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 15,
+            Id = 10,
             Longitude = 4.774445,
             Latitude = 51.5893616667,
             Name = "Begin Havermarkt",
@@ -227,16 +185,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 16,
-            Longitude = 4.7798883333,
-            Latitude = 51.5887783333,
-            Name = "",
-            Description = "",
-            ImgFilePath = "10"
-        });
-        sights.Add(new Sight
-        {
-            Id = 17,
+            Id = 11,
             Longitude = 4.7802783333,
             Latitude = 51.5888333333,
             Name = "Grote Kerk",
@@ -245,16 +194,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 18,
-            Longitude = 4.7748883333,
-            Latitude = 51.5887783333,
-            Name = "",
-            Description = "",
-            ImgFilePath = "15"
-        });
-        sights.Add(new Sight
-        {
-            Id = 19,
+            Id = 12,
             Longitude = 4.7751383333,
             Latitude = 51.588195,
             Name = "Het Poortje",
@@ -263,7 +203,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 20,
+            Id = 13,
             Longitude = 4.77575,
             Latitude = 51.5870833333,
             Name = "Ridderstraat",
@@ -272,7 +212,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 21,
+            Id = 14,
             Longitude = 4.776555,
             Latitude = 51.5874166667,
             Name = "Grote Markt",
@@ -281,7 +221,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 22,
+            Id = 15,
             Longitude = 4.7763333333,
             Latitude = 51.5880283333,
             Name = "Bevrijdingsmonument",
@@ -291,52 +231,27 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 23,
+            Id = 16,
             Longitude = 4.7761116667,
             Latitude = 51.58875,
             Name = "Stadhuis",
             Description = "",
             ImgFilePath = ""
         });
+
         sights.Add(new Sight
         {
-            Id = 24,
-            Longitude = 4.7763616667,
-            Latitude = 51.5879716667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 25,
-            Longitude = 4.776555,
-            Latitude = 51.5875,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 26,
+            Id = 17,
             Longitude = 4.77725,
             Latitude = 51.5876383333,
             Name = "Antonius van Paduakerk",
             Description = "",
             ImgFilePath = ""
         });
+
         sights.Add(new Sight
         {
-            Id = 27,
-            Longitude = 4.7785,
-            Latitude = 51.5882783333,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 28,
+            Id = 18,
             Longitude = 4.778945,
             Latitude = 51.588,
             Name = "Bibliotheek",
@@ -345,16 +260,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 29,
-            Longitude = 4.7802216667,
-            Latitude = 51.5873616667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 30,
+            Id = 19,
             Longitude = 4.7810283333,
             Latitude = 51.5877216667,
             Name = "Kloosterkazerne",
@@ -363,25 +269,17 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 31,
+            Id = 20,
             Longitude = 4.782,
             Latitude = 51.58775,
             Name = "Chasse theater",
             Description = "",
             ImgFilePath = ""
         });
+
         sights.Add(new Sight
         {
-            Id = 32,
-            Longitude = 4.78125,
-            Latitude = 51.58775,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 33,
+            Id = 21,
             Longitude = 4.7808883333,
             Latitude = 51.5886116667,
             Name = "Binding van Isaac",
@@ -390,16 +288,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 34,
-            Longitude = 4.780445,
-            Latitude = 51.5895,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 35,
+            Id = 22,
             Longitude = 4.781,
             Latitude = 51.5896666667,
             Name = "Beyerd",
@@ -408,70 +297,27 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 36,
-            Longitude = 4.780445,
-            Latitude = 51.5895,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 37,
+            Id = 23,
             Longitude = 4.78,
             Latitude = 51.589555,
             Name = "Gasthuispoort",
             Description = "",
             ImgFilePath = ""
         });
+
         sights.Add(new Sight
         {
-            Id = 38,
-            Longitude = 4.7798616667,
-            Latitude = 51.5894166667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 39,
-            Longitude = 4.779695,
-            Latitude = 51.5890283333,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 40,
-            Longitude = 4.7783333333,
-            Latitude = 51.588555,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 41,
+            Id = 24,
             Longitude = 4.777945,
             Latitude = 51.5891116667,
             Name = "Willem Merkxtuin",
             Description = "",
             ImgFilePath = ""
         });
+
         sights.Add(new Sight
         {
-            Id = 42,
-            Longitude = 4.777805,
-            Latitude = 51.5896666667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 43,
+            Id = 25,
             Longitude = 4.7783616667,
             Latitude = 51.589695,
             Name = "Begijnenhof",
@@ -480,16 +326,7 @@ class DatabaseManager
         });
         sights.Add(new Sight
         {
-            Id = 44,
-            Longitude = 4.777805,
-            Latitude = 51.5896666667,
-            Name = "",
-            Description = "",
-            ImgFilePath = ""
-        });
-        sights.Add(new Sight
-        {
-            Id = 45,
+            Id = 26,
             Longitude = 4.77625,
             Latitude = 51.5895,
             Name = "Einde stadswandeling",
@@ -498,6 +335,9 @@ class DatabaseManager
         });
 
         this.sqlite_conn.InsertAll(sights);
+
+        // TO DO: Remove old records from DB.
+
 
         List<Route> routes = new List<Route>();
         routes.Add(new Route
@@ -515,8 +355,30 @@ class DatabaseManager
         sightRouteLinks.Add(new SightRouteLink { Id = 1, RouteId = 1, SightId = 1 });
         sightRouteLinks.Add(new SightRouteLink { Id = 2, RouteId = 1, SightId = 2 });
         sightRouteLinks.Add(new SightRouteLink { Id = 3, RouteId = 1, SightId = 3 });
-        sightRouteLinks.Add(new SightRouteLink { Id = 4, RouteId = 2, SightId = 2 });
-        sightRouteLinks.Add(new SightRouteLink { Id = 5, RouteId = 2, SightId = 3 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 4, RouteId = 1, SightId = 4 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 5, RouteId = 1, SightId = 5 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 6, RouteId = 1, SightId = 6 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 7, RouteId = 1, SightId = 7 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 8, RouteId = 1, SightId = 8 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 9, RouteId = 1, SightId = 9 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 10, RouteId = 1, SightId = 10 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 11, RouteId = 1, SightId = 11 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 12, RouteId = 1, SightId = 12 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 13, RouteId = 1, SightId = 13 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 14, RouteId = 1, SightId = 14 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 15, RouteId = 1, SightId = 15 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 16, RouteId = 1, SightId = 16 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 17, RouteId = 1, SightId = 17 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 18, RouteId = 1, SightId = 18 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 19, RouteId = 1, SightId = 19 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 20, RouteId = 1, SightId = 20 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 21, RouteId = 1, SightId = 21 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 22, RouteId = 1, SightId = 22 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 23, RouteId = 1, SightId = 23 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 24, RouteId = 1, SightId = 24 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 25, RouteId = 1, SightId = 25 });
+        sightRouteLinks.Add(new SightRouteLink { Id = 26, RouteId = 1, SightId = 26 });
+
 
         this.sqlite_conn.InsertAll(sightRouteLinks);
 

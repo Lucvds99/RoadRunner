@@ -48,8 +48,9 @@ public partial class MapPage : ContentPage
         _routeService.LandmarksRecieved += OnLandmarksReceived;
         _routeService.CoordinatesReceived += OnCoordinatesReceived;
         _routeService.ReverseCoordinatesReceived += OnReverseCoordinatesReceived;
+
      
-        _routeService.GetLandmarks();
+        _routeService.GetLandmarksFromRoute(1);
         _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
         _landMarksVisited = new List<Landmark>();
 
@@ -150,7 +151,7 @@ public partial class MapPage : ContentPage
 
                 Mlocation location = await GetUserLocation();
 
-                MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+                MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
                 Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
                 Device.BeginInvokeOnMainThread(() =>
