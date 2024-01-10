@@ -26,7 +26,7 @@ public partial class MapPage : ContentPage
     private bool permissionGranted = false;
     private bool backupMove = false;
    
-	public MapPage()
+	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited)
 	{
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
@@ -55,8 +55,19 @@ public partial class MapPage : ContentPage
 
      
         _routeService.GetLandmarksFromRoute(1);
-        _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
-        _landMarksVisited = new List<Landmark>();
+
+        if(landmarksToVisit.Count == 0 && landmarksVisited.Count == 0)
+        {
+            _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
+            _landMarksVisited = new List<Landmark>();
+
+        }
+        else
+        {
+            _landMarksToVisit = landmarksToVisit;
+            _landMarksVisited = landmarksVisited;
+        }
+
 
         MainMap.IsShowingUser = true;
 
@@ -177,19 +188,21 @@ public partial class MapPage : ContentPage
         MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
         Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
-        Device.BeginInvokeOnMainThread(() =>
-        {
-            try
+     
+            Device.BeginInvokeOnMainThread(() =>
             {
-                MainMap.MoveToRegion(mapSpan);
+                try
+                {
+                    MainMap.MoveToRegion(mapSpan);
 
-            }catch(NullReferenceException e)
-            {
-                Trace.WriteLine("kanker op je moved zelf maar");
-                backupMove = true;
-            }
+                } catch (NullReferenceException e)
+                {
+                    Trace.WriteLine("hij doet verkeerd");
+                    backupMove = true;
+                }
 
-        });
+            });
+
 
         Trace.WriteLine("halloooooooooooo");
         UpdateMap();
@@ -379,7 +392,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage());
+        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -389,6 +402,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage());
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited));
     }
 }
