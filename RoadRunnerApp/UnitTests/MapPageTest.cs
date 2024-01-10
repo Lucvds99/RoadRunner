@@ -1,5 +1,6 @@
 ﻿using RoadRunnerApp.AppRoutes;
 using RoadRunnerApp.Views;
+using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace UnitTests
 {
@@ -42,12 +43,26 @@ namespace UnitTests
             Assert.Equal(expectedResult, isWithinThreshold);
         }
 
-        [Fact]
-        public void CheckLandMarksDistance()
+        [Theory]
+        [InlineData(1.0, 1.0)]
+        public async Task CheckLandMarksDistance(double userLatitude, double userLongitude)
         {
-            //mapPage.GetClosestLandmark();
+            // Arrange
+            var mapPage = new MapPage();
+            var mockUserLocation = new Mlocation(userLatitude, userLongitude);
 
-            
+            // Act
+            var distances = await mapPage.GetLandmarksDistance(mockUserLocation);
+
+            // Assert
+            Assert.NotNull(distances);
+            Assert.True(distances.Count > 0);
+
+            foreach (var distance in distances)
+            {
+                Assert.NotNull(distance.Item1);  // Ensure each landmark is not null
+                Assert.True(distance.Item2 >= 0);  // Ensure distance is non-negative
+            }
         }
 
     }
