@@ -1,6 +1,7 @@
 using RoadRunnerApp.UIControllers;
 using RoadRunnerApp.Views.Models;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Resources;
 
 namespace RoadRunnerApp.Views;
@@ -14,7 +15,19 @@ public partial class TutorialPage : ContentPage
         InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
 
-        ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.AppResource", typeof(TutorialPage).Assembly);
+        if (user.language != "Nederlands")
+        {
+            CultureInfo selectedCulture = new CultureInfo("nl-NL");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        } else
+        {
+            CultureInfo selectedCulture = new CultureInfo("");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        }
+        ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
+        Console.WriteLine(user.language);
 
         //Items for in the Carousel in Tutorial page
         var items = new List<CarouselItem>
