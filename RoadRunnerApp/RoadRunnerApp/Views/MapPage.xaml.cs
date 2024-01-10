@@ -24,6 +24,7 @@ public partial class MapPage : ContentPage
     private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
     private bool permissionGranted = false;
+    private bool backupMove = false;
    
 	public MapPage()
 	{
@@ -80,8 +81,8 @@ public partial class MapPage : ContentPage
         Thread moveMapThread = new Thread(MoveMap);
         moveMapThread.Start();
 
-        Thread updateMapThread = new Thread(UpdateMap);
-        updateMapThread.Start();
+        //Thread updateMapThread = new Thread(UpdateMap);
+        //updateMapThread.Start();
 
     }
 
@@ -91,23 +92,35 @@ public partial class MapPage : ContentPage
         while (true)
         {
 
-            if (!permissionGranted)
+
+
+            Trace.WriteLine("ik ben hier");
+            Mlocation location = await GetUserLocation();
+            try
             {
-                continue;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+
+                    //MainMap.MapElements.Clear();
+                    _routeService.GetRouteCoordinates(_landMarksToVisit, location);
+                    _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
+                    RouteInformation jemoeder = new RouteInformation { HeadingTo = $"Heading for {_landMarksToVisit[0].name}", DistanceLeft = $"Distance left = {_routeService.distance} km", TimeLeft = $"Time left = {_routeService.timeLeft} min" };
+
+                    BindingContext = jemoeder;
+
+                    if (backupMove)
+                    {
+                        MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
+                        MainMap.MoveToRegion(mapSpan);
+                        backupMove = false;
+                    }
+
+                });
+            }catch(NullReferenceException e)
+            {
+                Trace.WriteLine("laatste poging, ik weet niet meer");
             }
 
-            Mlocation location = await GetUserLocation();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-
-                //MainMap.MapElements.Clear();
-                _routeService.GetRouteCoordinates(_landMarksToVisit, location);
-                _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
-                RouteInformation jemoeder = new RouteInformation { HeadingTo = $"Heading for {_landMarksToVisit[0].name}", DistanceLeft = $"Distance left = {_routeService.distance} km", TimeLeft = $"Time left = {_routeService.timeLeft} min" };
-
-                BindingContext = jemoeder;
-
-            });
 
 
             List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
@@ -152,13 +165,11 @@ public partial class MapPage : ContentPage
             PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
             if (status == PermissionStatus.Granted)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(4000);
                 break;
             }
            
         }
-
-        permissionGranted = true;
 
 
         Mlocation location = await GetUserLocation();
@@ -168,9 +179,20 @@ public partial class MapPage : ContentPage
 
         Device.BeginInvokeOnMainThread(() =>
         {
-            MainMap.MoveToRegion(mapSpan);
+            try
+            {
+                MainMap.MoveToRegion(mapSpan);
+
+            }catch(NullReferenceException e)
+            {
+                Trace.WriteLine("kanker op je moved zelf maar");
+                backupMove = true;
+            }
 
         });
+
+        Trace.WriteLine("halloooooooooooo");
+        UpdateMap();
 
     }
 
