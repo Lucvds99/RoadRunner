@@ -30,6 +30,7 @@ public partial class MapPage : ContentPage
     private Polyline _originalPolyline = null;
     private bool permissionGranted = false;
     private bool backupMove = false;
+    private ResourceManager resourceManager;
    
 	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager? routeManager, User user)
 	{
@@ -50,16 +51,8 @@ public partial class MapPage : ContentPage
             Thread.CurrentThread.CurrentCulture = selectedCulture;
             Thread.CurrentThread.CurrentUICulture = selectedCulture;
         }
-        ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
+        resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
 
-
-        /////////////////hard coded embeding xaml 
-
-        RouteInformation headerInformation = new RouteInformation { HeadingTo = resourceManager.GetString("Map-Head") + " Test Heading", DistanceLeft = resourceManager.GetString("Map-Dist") + " 0.00km", TimeLeft = resourceManager.GetString("Map-Time") + " 0.00" };
-
-        BindingContext = headerInformation;
-
-        ////////////////
         
         if (routeManager != null)
         {
@@ -140,7 +133,7 @@ public partial class MapPage : ContentPage
                     //MainMap.MapElements.Clear();
                     _routeService.GetRouteCoordinates(_landMarksToVisit, location);
                     _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
-                    RouteInformation jemoeder = new RouteInformation { HeadingTo = $"Heading for {_landMarksToVisit[0].name}", DistanceLeft = $"Distance left = {_routeService.distance} km", TimeLeft = $"Time left = {_routeService.timeLeft} min" };
+                    RouteInformation jemoeder = new RouteInformation { HeadingTo = resourceManager.GetString("Map-Head") + " " + _landMarksToVisit[0].name, DistanceLeft = resourceManager.GetString("Map-Dist") + " " + _routeService.distance + " km", TimeLeft = resourceManager.GetString("Map-Time") + " " + _routeService.timeLeft + " min" };
 
                     BindingContext = jemoeder;
 
@@ -429,7 +422,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService, User user));
+        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService, user));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -439,6 +432,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService, User user));
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService));
     }
 }

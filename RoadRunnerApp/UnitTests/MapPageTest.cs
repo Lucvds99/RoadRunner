@@ -1,12 +1,13 @@
 using RoadRunnerApp.AppRoutes;
 using RoadRunnerApp.Views;
+using RoadRunnerApp.UIControllers;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace UnitTests
 {
     public class MapPageTest()
     {
-        MapPage mapPage = new MapPage(new List<Landmark>(), new List<Landmark>(), new RoadRunnerApp.AppRoutes.RouteManager());
+        MapPage mapPage = new MapPage(new List<Landmark>(), new List<Landmark>(), new RoadRunnerApp.AppRoutes.RouteManager(), new User());
 
         [Theory]
         [InlineData(10)]
