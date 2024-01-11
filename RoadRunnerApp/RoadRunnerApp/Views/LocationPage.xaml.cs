@@ -90,6 +90,6 @@ public partial class LocationPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage(_landmarksToVisit, _landmarksVisited, _routeManager));
+        Navigation.PushAsync(new RoutesPage(_landmarksToVisit, _landmarksVisited, _routeManager, user));
     }
 }

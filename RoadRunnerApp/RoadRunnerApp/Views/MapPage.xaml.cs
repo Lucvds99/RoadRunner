@@ -423,6 +423,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService));
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService, user));
     }
 }

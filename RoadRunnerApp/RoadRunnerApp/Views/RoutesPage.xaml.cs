@@ -18,7 +18,7 @@ public partial class RoutesPage : ContentPage
    
     private List<Route> routes;
     private RouteManager _routeManager;
-    public RoutesPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager routeManager)
+    public RoutesPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager routeManager, User user)
 	{
         this.user = user;
 
