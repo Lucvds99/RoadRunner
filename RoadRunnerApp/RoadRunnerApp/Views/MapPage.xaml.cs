@@ -123,7 +123,6 @@ public partial class MapPage : ContentPage
 
 
 
-            Trace.WriteLine("ik ben hier");
             Mlocation location = await GetUserLocation();
             try
             {
@@ -133,9 +132,9 @@ public partial class MapPage : ContentPage
                     //MainMap.MapElements.Clear();
                     _routeService.GetRouteCoordinates(_landMarksToVisit, location);
                     _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
-                    RouteInformation jemoeder = new RouteInformation { HeadingTo = resourceManager.GetString("Map-Head") + " " + _landMarksToVisit[0].name, DistanceLeft = resourceManager.GetString("Map-Dist") + " " + _routeService.distance + " km", TimeLeft = resourceManager.GetString("Map-Time") + " " + _routeService.timeLeft + " min" };
+                    RouteInformation RouteInfo = new RouteInformation { HeadingTo = resourceManager.GetString("Map-Head") + " " + _landMarksToVisit[0].name, DistanceLeft = resourceManager.GetString("Map-Dist") + " " + _routeService.distance + " km", TimeLeft = resourceManager.GetString("Map-Time") + " " + _routeService.timeLeft + " min" };
 
-                    BindingContext = jemoeder;
+                    BindingContext = RouteInfo;
 
                     if (backupMove)
                     {
@@ -147,14 +146,14 @@ public partial class MapPage : ContentPage
                 });
             }catch(NullReferenceException e)
             {
-                Trace.WriteLine("laatste poging, ik weet niet meer");
+                Trace.WriteLine(" ");
             }
 
 
 
             List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
             Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
-            Trace.WriteLine("ClosestTuple = " +  closestTuple.Item1.name + ":" + closestTuple.Item2);
+         
 
             if (isInDistance(closestTuple))
             {
@@ -175,12 +174,6 @@ public partial class MapPage : ContentPage
 
             }
 
-
-
-            foreach (Tuple<Landmark, double> distance in distances)
-            {
-                Trace.WriteLine(closestTuple);
-            }
 
             await Task.Delay(4000);
         }
@@ -205,7 +198,6 @@ public partial class MapPage : ContentPage
         Mlocation location = await GetUserLocation();
 
         MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
-        Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
      
             Device.BeginInvokeOnMainThread(() =>
@@ -216,14 +208,13 @@ public partial class MapPage : ContentPage
 
                 } catch (NullReferenceException e)
                 {
-                    Trace.WriteLine("hij doet verkeerd");
+                    Trace.WriteLine("hij doet het verkeerd");
                     backupMove = true;
                 }
 
             });
 
 
-        Trace.WriteLine("halloooooooooooo");
         UpdateMap();
 
     }

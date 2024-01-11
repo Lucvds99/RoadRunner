@@ -63,7 +63,7 @@ namespace RoadRunnerApp.AppRoutes
             HttpResponseMessage response = client.SendAsync(message).Result;
 
             response.EnsureSuccessStatusCode();
-            Trace.WriteLine("Bozo: " + response.Content.ReadAsStringAsync().Result);
+            Trace.WriteLine("response: " + response.Content.ReadAsStringAsync().Result);
 
             string requestResult = response.Content.ReadAsStringAsync().Result;
             return requestResult;
