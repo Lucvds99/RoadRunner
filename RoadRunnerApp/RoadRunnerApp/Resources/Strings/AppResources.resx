@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Location-Title" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="Map-Dist" xml:space="preserve">
+    <value>Distance:</value>
+  </data>
+  <data name="Map-Head" xml:space="preserve">
+    <value>Heading for:</value>
+  </data>
+  <data name="Map-Time" xml:space="preserve">
+    <value>Time Left:</value>
+  </data>
   <data name="Tut-It-1-desc" xml:space="preserve">
     <value>the buttons at the bottom of the Page card are used to navigate to the other pages. the left page is used for the individual monuments. The right page is used for the Routes. An important page is the map.</value>
   </data>
@@ -134,5 +146,11 @@
   </data>
   <data name="Tut-It-3-title" xml:space="preserve">
     <value>are you ready?</value>
+  </data>
+  <data name="Tut-Skip" xml:space="preserve">
+    <value>Skip Tutorial</value>
+  </data>
+  <data name="Tut-Title" xml:space="preserve">
+    <value>Tutorial Page</value>
   </data>
 </root>

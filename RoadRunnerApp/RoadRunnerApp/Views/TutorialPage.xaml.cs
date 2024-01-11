@@ -8,13 +8,15 @@ namespace RoadRunnerApp.Views;
 
 public partial class TutorialPage : ContentPage
 {
-    User user; 
-	public TutorialPage(User user)
+    User user;
+    public string TutTitle { get; set; }
+    public string Skip {  get; set; }
+    public TutorialPage(User user)
 	{
         this.user = user;
         InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
-
+        
         if (user.language != "Nederlands")
         {
             CultureInfo selectedCulture = new CultureInfo("nl-NL");
@@ -27,7 +29,11 @@ public partial class TutorialPage : ContentPage
             Thread.CurrentThread.CurrentUICulture = selectedCulture;
         }
         ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
-        Console.WriteLine(user.language);
+
+
+        TutTitle = resourceManager.GetString("Tut-Title");
+        Skip = resourceManager.GetString("Tut-Skip");
+        BindingContext = this;
 
         //Items for in the Carousel in Tutorial page
         var items = new List<CarouselItem>
@@ -38,15 +44,16 @@ public partial class TutorialPage : ContentPage
         };
         carouselView.ItemsSource = items;
     }
+
     public void onButtonClick(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(user));
     }
 
     public void onButtonClickSkip(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(user));
     }
 }

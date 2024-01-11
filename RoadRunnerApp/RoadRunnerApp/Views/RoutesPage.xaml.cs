@@ -1,16 +1,19 @@
 using Microsoft.Maui.Controls;
 using RoadRunnerApp.Views.Models;
 using System.Collections.ObjectModel;
+using RoadRunnerApp.UIControllers;
 
 namespace RoadRunnerApp.Views;
 
 public partial class RoutesPage : ContentPage
 {
+    User user;
     private ObservableCollection<RouteItem> _routesCollection;
-    public RoutesPage()
-	{
+    public RoutesPage(User user)
+    {
+        this.user = user;
 
-		InitializeComponent();
+        InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
         NavigationPage.SetBackButtonTitle(this, "");
     
@@ -34,12 +37,12 @@ public partial class RoutesPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage());
+        Navigation.PushAsync(new LocationPage(user));
     }
 
     private void MapButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new MapPage());     
+        Navigation.PushAsync(new MapPage(user));     
     }
 
     private void RoutesButton(object sender, EventArgs e)
