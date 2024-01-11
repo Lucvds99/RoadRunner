@@ -1,5 +1,7 @@
+using RoadRunnerApp.AppRoutes;
 using RoadRunnerApp.Views;
 using RoadRunnerApp.AppRoutes;
+using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace UnitTests
 {
@@ -7,27 +9,60 @@ namespace UnitTests
     {
         MapPage mapPage = new MapPage(new List<Landmark>(), new List<Landmark>(), new RoadRunnerApp.AppRoutes.RouteManager());
         [Fact]
+        [InlineData(10)]
         public void CheckClosestLandmark()
         {
-            //mapPage.GetClosestLandmark();
+            // Arrange
+            List<Tuple<Landmark, double>> distances = new List<Tuple<Landmark, double>>
+        {
+            new Tuple<Landmark, double>(new Landmark(1, "Landmark1", "Description1", "Theme1", new CustomLocation(1.0, 2.0)), 10),
+            new Tuple<Landmark, double>(new Landmark(2, "Landmark2", "Description2", "Theme2", new CustomLocation(3.0, 4.0)), 20),
+        };
 
-            Assert.Equal(true, false);
+            // Act
+            var closestTuple = await mapPage.GetClosestLandmark(distances);
+            var closestLandmark = closestTuple.Item1;
+
+            // Assert
+            Assert.NotNull(closestTuple);
+            Assert.Equal(closestDistance, closestTuple.Item2);
         }
 
-        [Fact]
-        public void CheckIsInDistance()
+        [Theory]
+        [InlineData(10.0, true)]
+        [InlineData(20.0, false)]
+        public void CheckIsInDistance(double distance, bool expectedResult)
         {
-            //mapPage.isInDistance();
+            // Arrange
+            var landmark = new Landmark(1, "Landmark1", "Description1", "Theme1", new CustomLocation(1.0, 2.0));
 
-            Assert.Equal(true, false);
+            // Act
+            bool isWithinThreshold = mapPage.isInDistance(Tuple.Create(landmark, distance));
+
+            // Assert
+            Assert.Equal(expectedResult, isWithinThreshold);
         }
 
-        [Fact]
-        public void CheckLandMarksDistance()
+        [Theory]
+        [InlineData(1.0, 1.0)]
+        public async Task CheckLandMarksDistance(double userLatitude, double userLongitude)
         {
-            //mapPage.GetClosestLandmark();
+            // Arrange
+            var mapPage = new MapPage();
+            var mockUserLocation = new Mlocation(userLatitude, userLongitude);
 
-            Assert.Equal(true, false);
+            // Act
+            var distances = await mapPage.GetLandmarksDistance(mockUserLocation);
+
+            // Assert
+            Assert.NotNull(distances);
+            Assert.True(distances.Count > 0);
+
+            foreach (var distance in distances)
+            {
+                Assert.NotNull(distance.Item1);  // Ensure each landmark is not null
+                Assert.True(distance.Item2 >= 0);  // Ensure distance is non-negative
+            }
         }
 
     }
