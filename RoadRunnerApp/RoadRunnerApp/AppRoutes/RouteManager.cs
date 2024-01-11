@@ -37,7 +37,7 @@ namespace RoadRunnerApp.AppRoutes
         public double distance { get; set; }
         public int timeLeft { get; set; }
 
-        private DatabaseManager _dbManager;
+        public DatabaseManager _dbManager { get; }
 
         public RouteManager()
         {
@@ -222,7 +222,7 @@ namespace RoadRunnerApp.AppRoutes
         }
 
         // Retrieve landmarks from database
-        public void GetLandmarks() //Change to Task later
+        public List<Landmark> GetLandmarks() //Change to Task later
         {
             // To do: Link this method with database so we get actual landmarks from DB
 
@@ -239,10 +239,11 @@ namespace RoadRunnerApp.AppRoutes
                     sight.Name,
                     sight.Description,
                     sight.Category.ToString(),
+                    sight.ImgFilePath,
                     new CustomLocation(sight.Latitude, sight.Longitude)));
             }
 
-
+            return retrievedLandmarks;
 
 
             //retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775, 4.782)));
@@ -275,6 +276,7 @@ namespace RoadRunnerApp.AppRoutes
                     sight.Name,
                     sight.Description,
                     sight.Category.ToString(),
+                    sight.ImgFilePath,
                     new CustomLocation(sight.Latitude, sight.Longitude)));
             }
 
@@ -292,8 +294,6 @@ namespace RoadRunnerApp.AppRoutes
 
             LandmarksRecieved?.Invoke(this, retrievedLandmarks);
         }
-
-
     }
 
 }

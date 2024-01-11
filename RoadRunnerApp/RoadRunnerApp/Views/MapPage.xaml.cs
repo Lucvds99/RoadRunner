@@ -11,6 +11,8 @@ using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
 using RoadRunnerApp.UIControllers;
 using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Alerts;
+using System.Net.NetworkInformation;
 
 
 namespace RoadRunnerApp.Views;
@@ -18,7 +20,7 @@ namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
-    private RouteManager _routeService;
+    private readonly RouteManager _routeService;
     private List<Landmark> _landmarksToDraw;
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
@@ -26,7 +28,7 @@ public partial class MapPage : ContentPage
     private bool permissionGranted = false;
     private bool backupMove = false;
    
-	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited)
+	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager? routeManager)
 	{
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
@@ -40,11 +42,16 @@ public partial class MapPage : ContentPage
         BindingContext = headerInformation;
 
         ////////////////
-        ///
-
-
-
-        _routeService = new RouteManager();
+        
+        if (routeManager != null)
+        {
+            _routeService = routeManager;
+        }
+        else
+        {
+            _routeService = new RouteManager();
+        }
+ 
         _landmarksToDraw = new List<Landmark>();
  
    
@@ -146,7 +153,7 @@ public partial class MapPage : ContentPage
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location"));
+                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location", closestLandmark.ImgFilePath));
                 });
 
                 _landMarksToVisit.Remove(closestLandmark);
@@ -295,7 +302,16 @@ public partial class MapPage : ContentPage
             double latitude = landmark.location.latitude;
 
             Microsoft.Maui.Devices.Sensors.Location pinlocation = new Microsoft.Maui.Devices.Sensors.Location(latitude, longitude);
-            MainMap.Pins.Add(new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place });
+            Pin pin = new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place };
+            MainMap.Pins.Add(pin);
+
+            pin.MarkerClicked += async (s, args) =>
+            {
+                args.HideInfoWindow = true;
+                SimplePopup popup = new SimplePopup(NotificationVariant.STANDARD, landmark.name,  landmark.description, landmark.ImgFilePath);
+                this.ShowPopup(popup);
+            };
+
         }
         
     }
@@ -303,7 +319,9 @@ public partial class MapPage : ContentPage
     private void OnLandmarksReceived(object sender, List<Landmark> landmarks)
     {
         _landmarksToDraw = landmarks;
+
         Drawpins(_landmarksToDraw);
+
     }
 
 
@@ -392,7 +410,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited));
+        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -402,6 +420,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited));
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService));
     }
 }
