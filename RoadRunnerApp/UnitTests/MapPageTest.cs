@@ -1,6 +1,5 @@
 using RoadRunnerApp.AppRoutes;
 using RoadRunnerApp.Views;
-using RoadRunnerApp.AppRoutes;
 using Mlocation = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace UnitTests
@@ -8,15 +7,16 @@ namespace UnitTests
     public class MapPageTest()
     {
         MapPage mapPage = new MapPage(new List<Landmark>(), new List<Landmark>(), new RoadRunnerApp.AppRoutes.RouteManager());
-        [Fact]
+
+        [Theory]
         [InlineData(10)]
-        public void CheckClosestLandmark()
+        public async void CheckClosestLandmark(double closestDistance)
         {
             // Arrange
             List<Tuple<Landmark, double>> distances = new List<Tuple<Landmark, double>>
         {
-            new Tuple<Landmark, double>(new Landmark(1, "Landmark1", "Description1", "Theme1", new CustomLocation(1.0, 2.0)), 10),
-            new Tuple<Landmark, double>(new Landmark(2, "Landmark2", "Description2", "Theme2", new CustomLocation(3.0, 4.0)), 20),
+            new Tuple<Landmark, double>(new Landmark(1, "Landmark1", "Description1", "Theme1", "img", new CustomLocation(1.0, 2.0)), 10),
+            new Tuple<Landmark, double>(new Landmark(2, "Landmark2", "Description2", "Theme2", "img2", new CustomLocation(3.0, 4.0)), 20),
         };
 
             // Act
@@ -34,7 +34,7 @@ namespace UnitTests
         public void CheckIsInDistance(double distance, bool expectedResult)
         {
             // Arrange
-            var landmark = new Landmark(1, "Landmark1", "Description1", "Theme1", new CustomLocation(1.0, 2.0));
+            var landmark = new Landmark(1, "Landmark1", "Description1", "Theme1","img", new CustomLocation(1.0, 2.0));
 
             // Act
             bool isWithinThreshold = mapPage.isInDistance(Tuple.Create(landmark, distance));
@@ -48,7 +48,7 @@ namespace UnitTests
         public async Task CheckLandMarksDistance(double userLatitude, double userLongitude)
         {
             // Arrange
-            var mapPage = new MapPage();
+            
             var mockUserLocation = new Mlocation(userLatitude, userLongitude);
 
             // Act
