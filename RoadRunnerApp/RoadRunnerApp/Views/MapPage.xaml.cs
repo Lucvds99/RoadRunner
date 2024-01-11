@@ -13,6 +13,8 @@ using RoadRunnerApp.UIControllers;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Maui.Alerts;
 using System.Net.NetworkInformation;
+using System.Globalization;
+using System.Resources;
 
 
 namespace RoadRunnerApp.Views;
@@ -21,6 +23,7 @@ namespace RoadRunnerApp.Views;
 public partial class MapPage : ContentPage
 {
     private readonly RouteManager _routeService;
+    User user;
     private List<Landmark> _landmarksToDraw;
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
@@ -28,16 +31,31 @@ public partial class MapPage : ContentPage
     private bool permissionGranted = false;
     private bool backupMove = false;
    
-	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager? routeManager)
+	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager? routeManager, User user)
 	{
+        this.user = user;
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
         NavigationPage.SetBackButtonTitle(this, "");
 
+        if (user.language != "Nederlands")
+        {
+            CultureInfo selectedCulture = new CultureInfo("nl-NL");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        }
+        else
+        {
+            CultureInfo selectedCulture = new CultureInfo("");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        }
+        ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
+
 
         /////////////////hard coded embeding xaml 
 
-        RouteInformation headerInformation = new RouteInformation { HeadingTo = "Heading for: Test Heading", DistanceLeft = "Distance: 0.00km", TimeLeft = "Time Left: 0.00"};
+        RouteInformation headerInformation = new RouteInformation { HeadingTo = resourceManager.GetString("Map-Head") + " Test Heading", DistanceLeft = resourceManager.GetString("Map-Dist") + " 0.00km", TimeLeft = resourceManager.GetString("Map-Time") + " 0.00" };
 
         BindingContext = headerInformation;
 
@@ -411,7 +429,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService));
+        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService, User user));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -421,6 +439,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService));
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService, User user));
     }
 }

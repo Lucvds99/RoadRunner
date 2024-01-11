@@ -5,11 +5,13 @@ using RoadRunnerApp.Views.Models;
 using System.Collections.ObjectModel;
 using RoadRunnerApp.AppRoutes;
 using RoadRunnerApp.AppDatabase;
+using RoadRunnerApp.UIControllers;
 
 namespace RoadRunnerApp.Views;
 
 public partial class RoutesPage : ContentPage
 {
+    User user;
     private ObservableCollection<RouteItem> _routesCollection;
     private List<Landmark> _landmarksToVisit;
     private List<Landmark> _landmarksVisited;
@@ -18,8 +20,9 @@ public partial class RoutesPage : ContentPage
     private RouteManager _routeManager;
     public RoutesPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager routeManager)
 	{
+        this.user = user;
 
-		InitializeComponent();
+        InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
         NavigationPage.SetBackButtonTitle(this, "");
         _landmarksToVisit = landmarksToVisit;
@@ -50,12 +53,12 @@ public partial class RoutesPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage(_landmarksToVisit, _landmarksVisited, _routeManager));
+        Navigation.PushAsync(new LocationPage(_landmarksToVisit, _landmarksVisited, _routeManager, user));
     }
 
     private void MapButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new MapPage(_landmarksToVisit, _landmarksVisited, _routeManager));     
+        Navigation.PushAsync(new MapPage(_landmarksToVisit, _landmarksVisited, _routeManager, user));     
     }
 
     private void RoutesButton(object sender, EventArgs e)
