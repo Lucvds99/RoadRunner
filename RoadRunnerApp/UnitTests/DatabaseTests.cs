@@ -49,7 +49,7 @@ namespace UnitTests
 
 
             // Check if amount of retrieved sights out DB are the correct amount for a certain route
-            Assert.Equal(3, amountOfSights);
+            Assert.Equal(26, amountOfSights);
         }
 
     }

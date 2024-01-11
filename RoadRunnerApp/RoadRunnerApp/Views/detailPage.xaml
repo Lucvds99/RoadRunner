@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RoadRunnerApp.Views.detailPage"
@@ -9,20 +8,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <HorizontalStackLayout Grid.Row="0">
-            <Image x:Name="HeaderIcon" Source="{Binding headerIcon}"/>
+        <HorizontalStackLayout Grid.Row="0" VerticalOptions="Center">
+            <Image x:Name="HeaderIcon" Source="{Binding headerIcon}" WidthRequest="50" HeightRequest="50"/>
             <VerticalStackLayout>
                 <Label x:Name="HeaderTitle" Text="{Binding Title}" FontSize="Medium"/>
                 <Label x:Name="HeaderInfo" Text="{Binding HeaderInfo}"/>
             </VerticalStackLayout>
         </HorizontalStackLayout>
-        <VerticalStackLayout Grid.Row="2">
-            <Image x:Name="image" Source="{Binding Image}"/>
+        <VerticalStackLayout Grid.Row="1">
+            <Image x:Name="image" Source="{Binding Image}" HeightRequest="300"/>
             <Label x:Name="Description" Text="{Binding Description}" Margin="10,0,0,10"/>
-                
-            <!-- Button only visible and active on last page -->
-            <Button x:Name="SelectRoute" Clicked="selectRouteClicked" Text="{Binding Button}"  IsVisible="{Binding hasButton}" IsEnabled="{Binding hasButton}"/>
         </VerticalStackLayout>
-        <Button x:Name="backButton" Clicked="goBackClicked" Margin="10"  Text="Go back" Grid.Row="3"/>
+        <Button x:Name="backButton" Clicked="goBackClicked" Margin="10" Text="Go back" Grid.Row="2" HeightRequest="40"/>
     </Grid>
 </ContentPage>

@@ -1,37 +1,64 @@
 using RoadRunnerApp.UIControllers;
 using RoadRunnerApp.Views.Models;
+using RoadRunnerApp.AppRoutes;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 
 namespace RoadRunnerApp.Views;
 
 public partial class TutorialPage : ContentPage
 {
-    User user; 
+    User user;
+    List<Landmark> landmarksVisited;
+    List<Landmark> landmarksToVisit;
+    public string TutTitle { get; set; }
+    public string Skip {  get; set; }
 	public TutorialPage(User user)
 	{
+        this.landmarksVisited = new List<Landmark>();
+        this.landmarksToVisit = new List<Landmark>();
         this.user = user;
-        string lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in vol";
-
         InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
+        
+        if (user.language != "Nederlands")
+        {
+            CultureInfo selectedCulture = new CultureInfo("nl-NL");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        } else
+        {
+            CultureInfo selectedCulture = new CultureInfo("");
+            Thread.CurrentThread.CurrentCulture = selectedCulture;
+            Thread.CurrentThread.CurrentUICulture = selectedCulture;
+        }
+        ResourceManager resourceManager = new ResourceManager("RoadRunnerApp.Resources.Strings.AppResources", typeof(TutorialPage).Assembly);
+
+
+        TutTitle = resourceManager.GetString("Tut-Title");
+        Skip = resourceManager.GetString("Tut-Skip");
+        BindingContext = this;
 
         //Items for in the Carousel in Tutorial page
         var items = new List<CarouselItem>
         {
-            new CarouselItem {Title = "Navigatie", Description = "de buttons onder op de map Page worden gebruikt om te navigeren naar de andere pagina's. de linker pagina wordt gebruikt voor de individuele monumenten. De rechter pagina wordt gebruikt voor de Routes. En de middelste pagina is de map.", Image = "testpicture.png", hasButton=false},
-            new CarouselItem {Title = "Route", Description = "De bezienswaardig heden in een route worden weergegeven met een rode marker. als je naar de marker loopt krijg je binnen een afstand van 15 meter een popup met informatie over de Locatie", Image = "testpicture.png", hasButton=false},
-            new CarouselItem {Title = "ben jij er klaar voor ? ", Description = "ben jij klaar voor de route die jij gaat lopen in de mooie stad Breda!", Image = "", Button = "continue", hasButton=true}
+            new CarouselItem {Title = resourceManager.GetString("Tut-It-1-title"), Description = resourceManager.GetString("Tut-It-1-desc"), Image = "testpicture.png", hasButton=false},
+            new CarouselItem {Title = resourceManager.GetString("Tut-It-2-title"), Description = resourceManager.GetString("Tut-It-2-desc"), Image = "testpicture.png", hasButton=false},
+            new CarouselItem {Title = resourceManager.GetString("Tut-It-3-title"), Description = resourceManager.GetString("Tut-It-3-desc"), Image = "", Button = "continue", hasButton=true}
         };
         carouselView.ItemsSource = items;
     }
+
     public void onButtonClick(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(landmarksVisited, landmarksToVisit, null, user));
     }
 
     public void onButtonClickSkip(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(landmarksToVisit, landmarksVisited, null, user));
     }
 }

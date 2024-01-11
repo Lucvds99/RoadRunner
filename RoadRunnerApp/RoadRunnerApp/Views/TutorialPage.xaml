@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label HorizontalOptions="Center" FontSize="Large">Tutorial Page</Label>
+        <Label HorizontalOptions="Center" FontSize="Large" Text="{Binding TutTitle}"></Label>
 
         <CarouselView x:Name="carouselView" IndicatorView="indicatorView" Grid.Row="1">
             <CarouselView.ItemTemplate>
@@ -30,7 +30,7 @@
         <!-- IndicatorView -->
         <IndicatorView x:Name="indicatorView" Margin="5" HorizontalOptions="Center" VerticalOptions="End" Grid.Row="2"/>
         <!-- Button to Skip Tutorial -->
-        <Button Margin="10" Clicked="onButtonClickSkip" Text="Skip Tutorial" Grid.Row="3"/>
+        <Button Margin="10" Clicked="onButtonClickSkip" Text="{Binding Skip}" Grid.Row="3"/>
     </Grid>
 
 </ContentPage>

@@ -34,8 +34,10 @@ namespace RoadRunnerApp.AppRoutes
         private List<Landmark> _passedLandmarks;
 
         public List<Mlocation> decodedCoordinates { get; set; }
+        public double distance { get; set; }
+        public int timeLeft { get; set; }
 
-        private DatabaseManager _dbManager;
+        public DatabaseManager _dbManager { get; }
 
         public RouteManager()
         {
@@ -61,7 +63,7 @@ namespace RoadRunnerApp.AppRoutes
             HttpResponseMessage response = client.SendAsync(message).Result;
 
             response.EnsureSuccessStatusCode();
-            Trace.WriteLine("Bozo: " + response.Content.ReadAsStringAsync().Result);
+            Trace.WriteLine("response: " + response.Content.ReadAsStringAsync().Result);
 
             string requestResult = response.Content.ReadAsStringAsync().Result;
             return requestResult;
@@ -99,11 +101,10 @@ namespace RoadRunnerApp.AppRoutes
 
             string json = JsonConvert.SerializeObject(routeRequest);
 
-            Trace.WriteLine("Bozo: " + json);
 
             string requestResult = GetHTTPRequest(json).Result;
 
-            decodedCoordinates = GetDecodedLocations(GetEncodedPolylines(requestResult));
+            decodedCoordinates = GetDecodedLocations(GetEncodedPolylines(requestResult, false));
             return decodedCoordinates;
         }
 
@@ -142,26 +143,36 @@ namespace RoadRunnerApp.AppRoutes
 
             string json = JsonConvert.SerializeObject(routeRequest);
 
-            Trace.WriteLine("BozoJsonReverse: " + json);
-
             string requestResult = GetHTTPRequest(json).Result;
 
-            decodedCoordinates = GetDecodedLocations(GetEncodedPolylines(requestResult));
+            decodedCoordinates = GetDecodedLocations(GetEncodedPolylines(requestResult, true));
             return decodedCoordinates;
 
         }
 
 
-        public List<string> GetEncodedPolylines(string httpResult)
+        public List<string> GetEncodedPolylines(string httpResult, bool reversed)
         {
+          
 
             JObject jsonObject = new JObject(JObject.Parse(httpResult));
             JArray routes = (JArray)(jsonObject["routes"]);
 
             List<string> encodedPolylines = new();
 
+
             foreach (JObject route in routes)
             {
+                if (!reversed)
+                {
+                    distance = (double)route.GetValue("distanceMeters")/1000;
+                    string timeLeftString = (string)route.GetValue("duration");
+                    timeLeftString =  timeLeftString.Remove(timeLeftString.Length-1);
+                    timeLeft = Convert.ToInt32(timeLeftString)/60;
+                }
+
+
+
                 JObject polyline = (JObject)route.GetValue("polyline");
                 string encodedPolyline = polyline.GetValue("encodedPolyline").ToString();
                 encodedPolylines.Add(encodedPolyline);
@@ -211,7 +222,7 @@ namespace RoadRunnerApp.AppRoutes
         }
 
         // Retrieve landmarks from database
-        public void GetLandmarks() //Change to Task later
+        public List<Landmark> GetLandmarks() //Change to Task later
         {
             // To do: Link this method with database so we get actual landmarks from DB
 
@@ -228,10 +239,11 @@ namespace RoadRunnerApp.AppRoutes
                     sight.Name,
                     sight.Description,
                     sight.Category.ToString(),
+                    sight.ImgFilePath,
                     new CustomLocation(sight.Latitude, sight.Longitude)));
             }
 
-
+            return retrievedLandmarks;
 
 
             //retrievedLandmarks.Add(new Landmark(1, "Chasse theater", "oulleh", "eets", new AppRoutes.CustomLocation(51.58775, 4.782)));
@@ -264,6 +276,7 @@ namespace RoadRunnerApp.AppRoutes
                     sight.Name,
                     sight.Description,
                     sight.Category.ToString(),
+                    sight.ImgFilePath,
                     new CustomLocation(sight.Latitude, sight.Longitude)));
             }
 
@@ -281,8 +294,6 @@ namespace RoadRunnerApp.AppRoutes
 
             LandmarksRecieved?.Invoke(this, retrievedLandmarks);
         }
-
-
     }
 
 }
