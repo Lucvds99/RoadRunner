@@ -9,9 +9,9 @@ public partial class LocationPage : ContentPage
     private ObservableCollection<locationItem> _locationCollection;
     private List<Landmark> _landmarksToVisit;
     private List<Landmark> _landmarksVisited;
-	public LocationPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager routeManager)
     private List<Landmark> _landmarks;
     private RouteManager _routeManager;
+    public LocationPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager routeManager)
 	{
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
