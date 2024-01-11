@@ -11,6 +11,8 @@ using System.ComponentModel;
 using Google.Protobuf.WellKnownTypes;
 using RoadRunnerApp.UIControllers;
 using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Alerts;
+using System.Net.NetworkInformation;
 
 
 namespace RoadRunnerApp.Views;
@@ -18,14 +20,15 @@ namespace RoadRunnerApp.Views;
 
 public partial class MapPage : ContentPage
 {
-    private readonly IRouteService _routeService;
+    private readonly RouteManager _routeService;
     private List<Landmark> _landmarksToDraw;
     private List<Landmark> _landMarksToVisit;
     private List<Landmark> _landMarksVisited;
     private Polyline _originalPolyline = null;
     private bool permissionGranted = false;
+    private bool backupMove = false;
    
-	public MapPage()
+	public MapPage(List<Landmark> landmarksToVisit, List<Landmark> landmarksVisited, RouteManager? routeManager)
 	{
 		InitializeComponent();
         NavigationPage.SetHasBackButton(this, false);
@@ -39,8 +42,16 @@ public partial class MapPage : ContentPage
         BindingContext = headerInformation;
 
         ////////////////
+        
+        if (routeManager != null)
+        {
+            _routeService = routeManager;
+        }
+        else
+        {
+            _routeService = new RouteManager();
+        }
  
-        _routeService = new RouteManager();
         _landmarksToDraw = new List<Landmark>();
  
    
@@ -51,8 +62,19 @@ public partial class MapPage : ContentPage
 
      
         _routeService.GetLandmarksFromRoute(1);
-        _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
-        _landMarksVisited = new List<Landmark>();
+
+        if(landmarksToVisit.Count == 0 && landmarksVisited.Count == 0)
+        {
+            _landMarksToVisit = new List<Landmark>(_landmarksToDraw);
+            _landMarksVisited = new List<Landmark>();
+
+        }
+        else
+        {
+            _landMarksToVisit = landmarksToVisit;
+            _landMarksVisited = landmarksVisited;
+        }
+
 
         MainMap.IsShowingUser = true;
 
@@ -77,8 +99,8 @@ public partial class MapPage : ContentPage
         Thread moveMapThread = new Thread(MoveMap);
         moveMapThread.Start();
 
-        Thread updateMapThread = new Thread(UpdateMap);
-        updateMapThread.Start();
+        //Thread updateMapThread = new Thread(UpdateMap);
+        //updateMapThread.Start();
 
     }
 
@@ -88,24 +110,40 @@ public partial class MapPage : ContentPage
         while (true)
         {
 
-            if (!permissionGranted)
+
+
+            Trace.WriteLine("ik ben hier");
+            Mlocation location = await GetUserLocation();
+            try
             {
-                continue;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+
+                    //MainMap.MapElements.Clear();
+                    _routeService.GetRouteCoordinates(_landMarksToVisit, location);
+                    _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
+                    RouteInformation jemoeder = new RouteInformation { HeadingTo = $"Heading for {_landMarksToVisit[0].name}", DistanceLeft = $"Distance left = {_routeService.distance} km", TimeLeft = $"Time left = {_routeService.timeLeft} min" };
+
+                    BindingContext = jemoeder;
+
+                    if (backupMove)
+                    {
+                        MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
+                        MainMap.MoveToRegion(mapSpan);
+                        backupMove = false;
+                    }
+
+                });
+            }catch(NullReferenceException e)
+            {
+                Trace.WriteLine("laatste poging, ik weet niet meer");
             }
 
-            Mlocation location = await GetUserLocation();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-
-                //MainMap.MapElements.Clear();
-                _routeService.GetRouteCoordinates(_landMarksToVisit, location);
-                _routeService.GetReverseRouteCoordinates(_landMarksVisited, location);
-
-            });
 
 
             List<Tuple<Landmark, double>> distances = await GetLandmarksDistance(location);
             Tuple<Landmark, double> closestTuple = await GetClosestLandmark(distances);
+            Trace.WriteLine("ClosestTuple = " +  closestTuple.Item1.name + ":" + closestTuple.Item2);
 
             if (isInDistance(closestTuple))
             {
@@ -115,7 +153,7 @@ public partial class MapPage : ContentPage
                 //TODO Deze landmark gebruiken voor het aanroepen van de popup.
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location"));
+                    this.ShowPopup(new SimplePopup(NotificationVariant.REACHED_LOCATION, closestLandmark.name, "you have reached this location", closestLandmark.ImgFilePath));
                 });
 
                 _landMarksToVisit.Remove(closestLandmark);
@@ -140,31 +178,42 @@ public partial class MapPage : ContentPage
     public async void MoveMap()
     {
 
-        while (true)
+            while (true)
         {
             PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
             if (status == PermissionStatus.Granted)
             {
+                Thread.Sleep(4000);
+                break;
+            }
+           
+        }
 
-                permissionGranted = true;
 
+        Mlocation location = await GetUserLocation();
 
-                Mlocation location = await GetUserLocation();
+        MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
+        Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
 
-                MapSpan mapSpan = new MapSpan(location, 0.005, 0.005);
-                Trace.WriteLine("bozo mapspan:" + mapSpan.Center + "location:" + location);
-
-                Device.BeginInvokeOnMainThread(() =>
+     
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                try
                 {
                     MainMap.MoveToRegion(mapSpan);
 
-                });
+                } catch (NullReferenceException e)
+                {
+                    Trace.WriteLine("hij doet verkeerd");
+                    backupMove = true;
+                }
+
+            });
 
 
-                await Task.Delay(500);
+        Trace.WriteLine("halloooooooooooo");
+        UpdateMap();
 
-            }
-        }
     }
 
 
@@ -194,9 +243,9 @@ public partial class MapPage : ContentPage
  
     public async Task<Tuple<Landmark, double>> GetClosestLandmark(List<Tuple<Landmark, double>> landmarksWithDistance)
     {
-        Landmark closestLandmark = landmarksWithDistance[0].Item1;
-        double closestDistance = landmarksWithDistance[0].Item2;
+        
         Tuple<Landmark,double> closestTuple = landmarksWithDistance.First();
+        double closestDistance = closestTuple.Item2;
 
 
         foreach (var tuple in landmarksWithDistance)
@@ -208,6 +257,7 @@ public partial class MapPage : ContentPage
             {
 
                 closestTuple = tuple;
+                closestDistance = closestTuple.Item2;
         
             }
             
@@ -252,7 +302,16 @@ public partial class MapPage : ContentPage
             double latitude = landmark.location.latitude;
 
             Microsoft.Maui.Devices.Sensors.Location pinlocation = new Microsoft.Maui.Devices.Sensors.Location(latitude, longitude);
-            MainMap.Pins.Add(new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place });
+            Pin pin = new Pin { Location = pinlocation, Label = landmark.name, Type = PinType.Place };
+            MainMap.Pins.Add(pin);
+
+            pin.MarkerClicked += async (s, args) =>
+            {
+                args.HideInfoWindow = true;
+                SimplePopup popup = new SimplePopup(NotificationVariant.STANDARD, landmark.name,  landmark.description, landmark.ImgFilePath);
+                this.ShowPopup(popup);
+            };
+
         }
         
     }
@@ -260,7 +319,9 @@ public partial class MapPage : ContentPage
     private void OnLandmarksReceived(object sender, List<Landmark> landmarks)
     {
         _landmarksToDraw = landmarks;
+
         Drawpins(_landmarksToDraw);
+
     }
 
 
@@ -349,7 +410,7 @@ public partial class MapPage : ContentPage
 
     private void LocationsButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new LocationPage());
+        Navigation.PushAsync(new LocationPage(_landMarksToVisit, _landMarksVisited, _routeService));
     }
 
     private void MapButton(object sender, EventArgs e)
@@ -359,6 +420,6 @@ public partial class MapPage : ContentPage
 
     private void RoutesButton(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new RoutesPage());
+        Navigation.PushAsync(new RoutesPage(_landMarksToVisit, _landMarksVisited, _routeService));
     }
 }

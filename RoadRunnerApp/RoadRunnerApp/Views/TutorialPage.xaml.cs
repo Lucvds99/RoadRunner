@@ -1,13 +1,18 @@
 using RoadRunnerApp.UIControllers;
 using RoadRunnerApp.Views.Models;
+using RoadRunnerApp.AppRoutes;
 
 namespace RoadRunnerApp.Views;
 
 public partial class TutorialPage : ContentPage
 {
-    User user; 
+    User user;
+    List<Landmark> landmarksVisited;
+    List<Landmark> landmarksToVisit;
 	public TutorialPage(User user)
 	{
+        this.landmarksVisited = new List<Landmark>();
+        this.landmarksToVisit = new List<Landmark>();
         this.user = user;
         string lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in vol";
 
@@ -26,12 +31,12 @@ public partial class TutorialPage : ContentPage
     public void onButtonClick(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(landmarksVisited, landmarksToVisit, null));
     }
 
     public void onButtonClickSkip(object sender, EventArgs e)
     {
         //TODO goes to the Map Page
-        Navigation.PushAsync(new MapPage());
+        Navigation.PushAsync(new MapPage(landmarksToVisit, landmarksVisited, null));
     }
 }

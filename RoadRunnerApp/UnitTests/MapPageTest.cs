@@ -1,10 +1,11 @@
-﻿using RoadRunnerApp.Views;
+using RoadRunnerApp.Views;
+using RoadRunnerApp.AppRoutes;
 
 namespace UnitTests
 {
     public class MapPageTest()
     {
-        MapPage mapPage = new MapPage();
+        MapPage mapPage = new MapPage(new List<Landmark>(), new List<Landmark>(), new RoadRunnerApp.AppRoutes.RouteManager());
         [Fact]
         public void CheckClosestLandmark()
         {
